@@ -3,7 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.niko.code.resources;
+package resources;
+
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,15 +15,15 @@ import java.sql.SQLException;
  * @author dell
  */
 public class ConexionBase {
-    private  String USER="root";
-    private  String PASSWORD="123456789";
-    private  String URL_MYSQL="jdbc:mysql://localhost:3306/data_tienda";
+    private final  String USER="root";
+    private final  String PASSWORD="123456789";
+    private final  String URL_MYSQL="jdbc:mysql://localhost:3306/data_tienda";
     private Connection con;
     
     
-    public Connection conexion(){
+    public Connection conexion() throws ClassNotFoundException{
         try{
-          
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con=DriverManager.getConnection(URL_MYSQL,USER,PASSWORD);
             System.out.println("La conexion con la base de datos fue satiscaftorio");
             
