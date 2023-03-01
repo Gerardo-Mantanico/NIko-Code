@@ -25,9 +25,9 @@
                 <div class="container-form">
                     <form method="POST" action="ServletLogin"  class="form">
                         <label for="text" class="label">User Name</label>
-                        <input type="text" class="input" name="User_name" placeholder="Gerardo7897">
+                        <input type="text" class="input" name="User_name" placeholder="Gerardo7897" required>
                         <label for="password" class="label">Password:</label>
-                        <input type="password" name="password" placeholder="********" class="input input-password" id="password">
+                        <input type="password" name="password" placeholder="********" class="input input-password" id="password" required>
                         <h5> </h5>       
                         <button type="submit" class="button">Sign up</button>
                     </form>

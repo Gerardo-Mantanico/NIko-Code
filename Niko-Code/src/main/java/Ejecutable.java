@@ -1,12 +1,18 @@
 
 
 
+import Resources_servlet.ServletCreate;
+import Resources_servlet.ServletLogin;
+import clases.Usuario;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import resources.ConexionBase;
 
 
@@ -25,10 +31,46 @@ import resources.ConexionBase;
  * @author dell
  */
 public class Ejecutable {
-    public static void main(String args[]) throws ClassNotFoundException{
-        String password = "myPassword123";
-        String en = encryptPassword(password);
-        System.out.println("Password: " + en);
+    
+    
+    public static void main(String args[]) {
+        //String password = "myPassword123";
+        //String en = encryptPassword(password);
+       // System.out.println("Password: " + en);
+        
+        Usuario usuario=new Usuario();
+        
+         usuario.setNombre("pablo");
+         usuario.setNombreUsuario("pablo1");
+         usuario.setContraseña("pablo23");
+         
+         ConexionBase con=new ConexionBase();
+        String query = "INSERT INTO user_admin (_code, _name, user_name, _password) VALUES (?,?, ?, ?)";
+          int codigo=1004;
+           try{
+            PreparedStatement preparedStatement; 
+            preparedStatement = con.conexion().prepareStatement(query);
+            preparedStatement.setInt(1, codigo);
+            preparedStatement.setString(2, usuario.getNombre());
+            preparedStatement.setString(3, usuario.getNombreUsuario());
+            preparedStatement.setString(4,   usuario.getContraseña());
+            preparedStatement.executeUpdate();
+            System.out.println("Usuario Administrador registrado");
+            
+        } catch (SQLException e) {
+            System.out.println("Error al crear usuario: " + e);
+        }
+        catch (ClassNotFoundException ex) {
+                Logger.getLogger(ServletCreate.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+          
+    
+        
+            
+     
+        
         
         
          // String nombreUsuario=request.getParameter("User_name");
@@ -58,52 +100,9 @@ public class Ejecutable {
             }catch (SQLException ex) {
             
         }*/
-         
-        
-       /* try {
-            ConexionBase con=new ConexionBase();
-           // String query="SELECT* FROM LOGIN WHERE user_name='luis' ";
-             String query="SELECT* FROM LOGIN WHERE user_name='wicho' ";
-            Statement ps;
-            ResultSet rs;
-            
-            ps=con.conexion().createStatement();
-            rs=ps.executeQuery(query);
-            
-            if(rs.next()){
-              //  String conta="hola";
-               // String a="AES_ENCRYPT('123456','clave')";
-
-            System.out.println(rs.getString("user_name"));
-            System.out.println(rs.getString("_password"));
-            
-            }
-            else {
-            System.out.println("EL Usuario no tiene cuenta");
-            }
-            con.conexion().close();
-        } catch (SQLException ex) {
-            Logger.getLogger(Ejecutable.class.getName()).log(Level.SEVERE, null, ex);
-        }
-     */   
-    }
+           
     
-       public static String encryptPassword(String password) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hashedPassword = md.digest(password.getBytes(StandardCharsets.UTF_8));
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hashedPassword) {
-                String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) hexString.append('0');
-                hexString.append(hex);
-            }
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    
+  
     
         
 }

@@ -8,17 +8,9 @@ package clases;
 public class Usuario {
     private int codigo;
     private String nombre;
+    private String nombreUsuario;
     private String contraseña;
 
-    public Usuario(int codigo, String nombre, String contraseña) {
-        this.codigo = codigo;
-        this.nombre = nombre;
-        this.contraseña = contraseña;
-    }
-    
-    public Usuario(){
-        
-    }
 
     public int getCodigo() {
         return codigo;
@@ -28,12 +20,12 @@ public class Usuario {
         this.codigo = codigo;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNombreUsuario() {
+        return nombreUsuario;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombreUsuario(String nombre) {
+        this.nombreUsuario = nombre;
     }
 
     public String getContraseña() {
@@ -42,6 +34,14 @@ public class Usuario {
 
     public void setContraseña(String contraseña) {
         this.contraseña = contraseña;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
     
     
