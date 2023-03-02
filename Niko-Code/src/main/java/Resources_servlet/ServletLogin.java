@@ -77,7 +77,6 @@ public class ServletLogin extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //response.sendRedirect("Venta_Administrativa/Venta_Principal.jsp");
             String nombreUsuario=request.getParameter("User_name");
             String contraseña=request.getParameter("password");
             ConexionBase con=new ConexionBase();

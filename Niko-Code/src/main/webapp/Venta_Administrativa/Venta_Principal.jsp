@@ -4,6 +4,9 @@
     Author     : dell
 --%>
 
+<%@page import="clases.Usuario"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="BaseDatos.EditarDB"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
     <html lang="en">
@@ -23,6 +26,7 @@
                         <a class="a-encabezado" href="UsuarioBodega.jsp">Warehouse Users</a>
                         <a class="a-encabezado" href="SupervisorTienda.jsp">Supervisory User</a>
                         <a class="a-encabezado" href="">Reports</a>
+                        <input class="inputt" type="file"> 
                     </nav>
 
                 </div>
@@ -38,7 +42,7 @@
                             <label for="tex" class="label">Name:</label>
                             <input type="text" name="name" class="input" placeholder="GerardoTax" required>
                             <label for="tex" class="label">Username:</label>
-                            <input type="text" name="user_name" class="input" placeholder="Gtax419holis" required>
+                            <input type="text"  value="wicho" name="user_name" class="input" placeholder="Gtax419holis" required>
                             <label for="password" class="label" >Password:</label>
                             <input type="password" name="password" class="input" placeholder="*******" required>
                             <button class="button" value="admin" name="button" >Create</button>
@@ -50,31 +54,29 @@
                     <table>
                         <thead>
                           <tr>
-                            <th>User Name </th>
+                            <th>Name</th>
+                            <th>User Name</th>
                             <th>Password</th>
-                            <th>Area</th>
                             <th></th>
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
+                            <tr>
+                               <% EditarDB db=new EditarDB();
+                                ArrayList<Usuario> modelList;
+                                modelList=db.listUsuarioTienda("user_admin");
+                                for(int i = 0; i < modelList.size(); i++) {  
+                                %>
+                                 <td><% out.println(modelList.get(i).getNombre());%></td>
+                                 <td><% out.println(modelList.get(i).getNombreUsuario());%></td>
+                                 <td><%out.println(modelList.get(i).getContraseña());%></td>
                             <th scope="row"> <button class="button-secundary">Edit </button></th>
                             <th scope="row"> <button class="button-secundary">Delete </button></th>
                           </tr>
-                          <tr>
-
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fadsfsdfsdfdsfsdfsdft</td>
-                            <th scope="row"> <button class="button-secundary">Delete </button></th>
-                          </tr>
+                          <%}%>
                         </tbody>
                     </table>     
                 </div>
-
             </div>
         </body>
     </html>

@@ -118,6 +118,7 @@ and open the template in the editor.
             }
             td{
                 font-size: var(--sm);
+                color:black;
 
             }
             thead{
@@ -159,3 +160,5 @@ and open the template in the editor.
                 font-weight:  bold;
                 text-decoration: none;
                 }
+               
+             

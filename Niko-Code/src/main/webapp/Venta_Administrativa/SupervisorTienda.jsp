@@ -4,6 +4,9 @@
     Author     : HP
 --%>
 
+<%@page import="java.util.ArrayList"%>
+<%@page import="clases.UsuarioSupervisor"%>
+<%@page import="BaseDatos.EditarDB"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
     <html lang="en">
@@ -52,27 +55,28 @@
                     <table>
                         <thead>
                           <tr>
-                            <th>User Name </th>
+                            <th>Name </th>
+                            <th>User Name</th>
                             <th>Password</th>
-                            <th>Area</th>
+                            <th>E-mail</th>
                             <th></th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            <th scope="row"> <button class="button-secundary">Edit </button></th>
+                               <% EditarDB db=new EditarDB();
+                                ArrayList<UsuarioSupervisor> modelList;
+                                modelList=db.listUsuarioTienda("supervisory");
+                                for(int i = 0; i < modelList.size(); i++) {  
+                                %>
+                                 <td><% out.println(modelList.get(i).getNombre());%></td>
+                                 <td><% out.println(modelList.get(i).getNombreUsuario());%></td>
+                                 <td><%out.println(modelList.get(i).getContraseña());%></td>
+                                 <td><%out.println(modelList.get(i).getEmail());%></td>
+                                 <th scope="row"> <button class="button-secundary" value="<% modelList.get(i).getCodigo();%>" >Edit </button></th>
                             <th scope="row"> <button class="button-secundary">Delete </button></th>
                           </tr>
-                          <tr>
-
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fadsfsdfsdfdsfsdfsdft</td>
-                            <th scope="row"> <button class="button-secundary">Delete </button></th>
-                          </tr>
+                          <%}%>
                         </tbody>
                     </table>     
                 </div>

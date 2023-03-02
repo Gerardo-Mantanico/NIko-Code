@@ -83,13 +83,10 @@ public class ServletCreate extends HttpServlet {
                     crearSupervisor(supervisor, code);
                     response.sendRedirect("Venta_Administrativa/SupervisorTienda.jsp"); 
                 break;
-
-
-            default:
-            throw new AssertionError();}
+            default:}  
             } catch (NoSuchAlgorithmException ex) {
                  Logger.getLogger(ServletCreate.class.getName()).log(Level.SEVERE, null, ex);}
-    }
+    }   
 
     @Override
     public String getServletInfo() {
