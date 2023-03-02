@@ -11,6 +11,16 @@ public class Usuario {
     private String nombreUsuario;
     private String contraseña;
 
+    public Usuario(int codigo, String nombre, String nombreUsuario, String contraseña) {
+        this.codigo = codigo;
+        this.nombre = nombre;
+        this.nombreUsuario = nombreUsuario;
+        this.contraseña = contraseña;
+    }
+    public Usuario(){
+        
+    }
+
 
     public int getCodigo() {
         return codigo;

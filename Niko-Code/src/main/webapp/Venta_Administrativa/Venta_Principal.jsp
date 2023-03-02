@@ -41,7 +41,7 @@
                             <input type="text" name="user_name" class="input" placeholder="Gtax419holis" required>
                             <label for="password" class="label" >Password:</label>
                             <input type="password" name="password" class="input" placeholder="*******" required>
-                            <button class="button">Create</button>
+                            <button class="button" value="admin" name="button" >Create</button>
                         </form>
 
                     </div>
@@ -61,6 +61,7 @@
                             <td>Mark</td>
                             <td>Otto</td>
                             <td>@mdo</td>
+                            <th scope="row"> <button class="button-secundary">Edit </button></th>
                             <th scope="row"> <button class="button-secundary">Delete </button></th>
                           </tr>
                           <tr>

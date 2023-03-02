@@ -36,15 +36,14 @@
                         <h1 class="title"> Create Supervisory User</h1>
                         <form method="POST" action="../ServletCreate" class="form"> 
                             <label for="tex" class="label">Name:</label>
-                            <input type="text" name="name" class="input" placeholder="GerardoTax">
+                            <input type="text" name="name" class="input" placeholder="GerardoTax" required>
                             <label for="tex" class="label">Username:</label>
-                            <input type="text" name="user_name" class="input" placeholder="Gtax419holis">
+                            <input type="text" name="user_name" class="input" placeholder="Gtax419holis" required>
                             <label for="password" class="label" >Password:</label>
-                            <input type="password" name="password" class="input" placeholder="*******">
+                            <input type="password" name="password" class="input" placeholder="*******" required>
                             <label for="email" class="label" >Email address:</label>
-                            <input type="email" name="email" class="input" placeholder="GerardoTax@gmail.com">
-                             
-                            <button class="button">Save</button>
+                            <input type="email" name="email" class="input" placeholder="GerardoTax@gmail.com" required>
+                            <button class="button" name="button" value="Supervisor" >Save</button>
                         </form>
 
                     </div>
@@ -64,6 +63,7 @@
                             <td>Mark</td>
                             <td>Otto</td>
                             <td>@mdo</td>
+                            <th scope="row"> <button class="button-secundary">Edit </button></th>
                             <th scope="row"> <button class="button-secundary">Delete </button></th>
                           </tr>
                           <tr>

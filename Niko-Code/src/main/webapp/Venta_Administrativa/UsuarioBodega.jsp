@@ -37,15 +37,15 @@
                         <h1 class="title"> Create Warehouse User</h1>
                         <form method="POST" action="../ServletCreate" class="form"> 
                             <label for="tex" class="label">Name:</label>
-                            <input type="text" name="name" class="input" placeholder="GerardoTax">
+                            <input type="text" name="name" class="input" placeholder="GerardoTax" required>
                             <label for="tex" class="label">Username:</label>
-                            <input type="text" name="user_name" class="input" placeholder="Gtax419holis">
+                            <input type="text" name="user_name" class="input" placeholder="Gtax419holis" required>
                             <label for="password" class="label" >Password:</label>
-                            <input type="password" name="password" minlength="8"  class="input" placeholder="*******">
+                            <input type="password" name="password" minlength="8"  class="input" placeholder="*******" required>
                             <label for="email" class="label" >Email address:</label>
-                            <input type="email" name="email" class="input" placeholder="GerardoTax@gmail.com">
+                            <input type="email" name="email" class="input" placeholder="GerardoTax@gmail.com" required>
                             <label for="text" class="label">Stores:</label>
-                            <input type="text" name="store" class="input" placeholder="2,3">                
+                            <input type="text" name="store" class="input" placeholder="2,3" required>                
                             <button class="button">Save</button>
                         </form>
 
@@ -66,6 +66,7 @@
                             <td>Mark</td>
                             <td>Otto</td>
                             <td>@mdo</td>
+                            <th scope="row"> <button class="button-secundary">Edit </button></th>
                             <th scope="row"> <button class="button-secundary">Delete </button></th>
                           </tr>
                           <tr>

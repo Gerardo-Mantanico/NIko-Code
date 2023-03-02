@@ -84,7 +84,7 @@ and open the template in the editor.
             .button{
                 background-color: var(--white);
                 color: var(--hospital--green);
-                border: 1px solid var(--hospital--green);
+                border: 4px solid var(--hospital--green);
                 border-radius: 8px;
                 width: 100%;
                 cursor: pointer;
@@ -132,7 +132,7 @@ and open the template in the editor.
             .button-secundary{
                 background-color: var(--white);
                 color: var(--hospital--green);
-                border: 1px solid var(--hospital--green);
+                border: 4px solid var(--hospital--green);
                 border-radius: 8px;
                 width: 75%;
                 height: 30px;
