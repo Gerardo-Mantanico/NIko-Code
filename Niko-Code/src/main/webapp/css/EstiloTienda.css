@@ -1,0 +1,144 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 4/03/2023, 00:38:48
+    Author     : HP
+*/
+     :root{
+                --white: #FFFFFF;
+                --black:  #000000;
+                --very--light--pink: #C7C7C7;
+                --text--input--field: #F7F7F7;
+                --hospital--green: #ACD9B2;
+                --dark: #232830;
+                --sm: 14px;
+                --md: 16px;
+                --lg: 18px;
+            }
+            body{
+                margin: 0;
+                font-family: 'Quicksand', sans-serif;
+            }
+        .container-store{
+            width: 100%;
+                height: 100vh;
+                display: flex;
+                place-items: center;
+        }
+        .container-left{
+            width: 50%;
+            height: 100vh;
+        }
+        .container-right{
+            width: 49.80%;
+            height: 100vh;
+        }
+        .container-order{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            border: 2px solid var(--hospital--green);
+        }
+        .container-receiver{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            border: 2px solid var(--hospital--green);
+        }
+        .title{
+            
+            text-align: center;
+        }
+        .label{
+            font-size: var(--lg);
+            font-weight:  bold;
+        }
+
+        .input{
+            background-color: var(--very--light--pink);
+            width: 165px;
+            height: 23px;
+            border-radius: 8px;
+            border: none;
+            font-size: var(--md);
+            padding: 6px;
+        }
+       .container-header{
+           /* background-color: chartreuse;*/
+            width: 90%;
+            height: 100%;
+    
+       }
+       .input-number{
+            background-color: var(--very--light--pink);
+            width: 90px;
+            height: 23px;
+            border-radius: 8px;
+            border: none;
+            font-size: var(--md);
+            padding: 6px;
+       }
+       .container-products{
+            margin-top: 20px;
+       }
+       .input-search{
+            background-color: var(--very--light--pink);
+            width: 250px;
+            height: 37px;
+            border-radius: 8px;
+            border: none;
+            font-size: var(--md);
+            padding: 6px;
+       }
+       .input-button{
+            background-color: var(--white);
+            color: var(--hospital--green);
+            border: 4px solid var(--hospital--green);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: var(--md);
+            font-weight: bold;
+            height: 40px;
+            width: 100px;
+            margin-left: 20px;
+       }
+       .container-list{
+        margin-top: 30px;
+       }
+       th,td{
+                padding: 10px;
+
+            }
+            td{
+                font-size: var(--lg);
+                color:black;
+
+            }
+            thead{
+                background-color: var(--text--input--field);
+                font-size: var(--md);
+
+            }
+            tr:hover td{
+                background-color: var(--hospital--green);
+                color: var(--white);
+            }
+            .header{
+                width: 100%;
+                height: 60px;
+                display: flex;
+                justify-content: center;
+                place-items: center;
+                background-color: var(--hospital--green);
+            }
+            .a-header{
+                padding-left: 40px;
+                color: var(--black);
+                font-size: var(--lg);
+                font-weight:  bold;
+                text-decoration: none;
+                }
