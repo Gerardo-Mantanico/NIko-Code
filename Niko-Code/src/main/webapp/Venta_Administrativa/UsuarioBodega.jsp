@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <!DOCTYPE html>
     <html lang="en">
@@ -12,17 +13,17 @@
             <meta charset="UTF-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <link rel="stylesheet" href="../css/VentanaAdmin.css">
+            <link rel="stylesheet" href="css/VentanaAdmin.css">
             <title> Create Warehouse Users</title>
         </head>
         <body>
             <head>
                 <div class="encabezado">
                      <nav class="nav">
-                        <a class="a-encabezado" href="Venta_Principal.jsp"> Home</a>
-                        <a class="a-encabezado" href="UsuariosTienda.jsp">Store Users</a>
-                        <a class="a-encabezado" href="UsuarioBodega.jsp">Warehouse Users</a>
-                        <a class="a-encabezado" href="SupervisorTienda.jsp">Supervisory User</a>
+                        <a class="a-encabezado" href="Ventanas?accion=admin"> Home</a>
+                        <a class="a-encabezado" href="Ventanas?accion=tienda">Store Users</a>
+                        <a class="a-encabezado" href="Ventanas?accion=bodega">Warehouse Users</a>
+                        <a class="a-encabezado" href="Ventanas?accion=supervisor">Supervisory User</a>
                         <a class="a-encabezado" href="">Reports</a>
                     </nav>
 
@@ -35,7 +36,7 @@
                     </div>
                     <div class="container-form">
                         <h1 class="title"> Create Warehouse User</h1>
-                        <form method="POST" action="../ServletCreate" class="form"> 
+                        <form method="POST" action="ServletCreate" class="form"> 
                             <label for="tex" class="label">Name:</label>
                             <input type="text" name="name" class="input" placeholder="GerardoTax" required>
                             <label for="tex" class="label">Username:</label>

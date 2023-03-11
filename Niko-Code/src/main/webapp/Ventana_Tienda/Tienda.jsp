@@ -12,12 +12,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css/EstiloTienda.css"/>
-    title>Tienda</title>
+    <title>Tienda</title>
 </head>
 <body>
     <header class="header">
         <H1>Tienda</H1>
-        <a class="a-header" href=""> Incidencias y devoluciones</a>
+        <a class="a-header" href="IncidenciaDevolucion.jsp"> Incidencias y devoluciones</a>
     </header>
     <div class="container-store">
         <div class="container-left">

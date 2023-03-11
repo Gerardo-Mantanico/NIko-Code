@@ -12,6 +12,7 @@ import clases.UsuarioTienda;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import resources.ConexionBase;
@@ -26,21 +27,29 @@ public class GuardarDB {
     private PreparedStatement preparedStatement; 
     //metodo de verificacion de usuairo 
     
-    public void  verificacionUsuario(String usuario, String contraseña,String tipo){
+    public boolean verificacionUsuario(String usuario, String contraseña,String tipo){
+         boolean estado=true;
             String query = "SELECT * FROM LOGIN WHERE user_name = '"+usuario+"'";
             try{
                 PreparedStatement p = con.conexion().prepareStatement(query);
                 ResultSet r = p.executeQuery();
-                if(r.next()){System.out.println("Este usuario ya existe");}
+                if(r.next()){
+                        System.out.println("Este usuario ya existe");
+                        estado=true;
+                    }
                 else{
-                     crearUsuario(usuario,contraseña,tipo);}
+                     crearUsuario(usuario,contraseña,tipo);
+                     estado=false;
+                }
             }catch(SQLException ex){
                 System.out.println("Error en "+ ex);
+                 estado=true;
             } catch (ClassNotFoundException ex) {
             Logger.getLogger(ServletLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return estado;
      }
-    //metodo para crear usuario 
+    //metodo para crear usuario  admin
     public void crearAdmin(Usuario usuario ,int codigo) {
         String query = "INSERT INTO user_admin (_code, _name, user_name, _password) VALUES (?,?, ?, ?)";
         try{
@@ -133,5 +142,7 @@ public class GuardarDB {
             Logger.getLogger(ServletCreate.class.getName()).log(Level.SEVERE, null, ex);
         }  
     }   
+    
+      
  
 }

@@ -8,23 +8,24 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="BaseDatos.EditarDB"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
  <html lang="en">
         <head>
             <meta charset="UTF-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <link rel="stylesheet" href="../css/VentanaAdmin.css"/>
+            <link rel="stylesheet" href="css/VentanaAdmin.css"/>
             <title>Store Users</title>
         </head>
         <body>
             <head>
                 <div class="encabezado">
                       <nav class="nav">
-                        <a class="a-encabezado" href="Venta_Principal.jsp"> Home</a>
-                        <a class="a-encabezado" href="UsuariosTienda.jsp">Store Users</a>
-                        <a class="a-encabezado" href="UsuarioBodega.jsp">Warehouse Users</a>
-                        <a class="a-encabezado" href="SupervisorTienda.jsp">Supervisory User</a>
+                        <a class="a-encabezado" href="Ventanas?accion=admin"> Home</a>
+                        <a class="a-encabezado" href="Ventanas?accion=tienda">Store Users</a>
+                        <a class="a-encabezado" href="Ventanas?accion=bodega">Warehouse Users</a>
+                        <a class="a-encabezado" href="Ventanas?accion=supervisor">Supervisory User</a>
                         <a class="a-encabezado" href="">Reports</a>
                     </nav>
 
@@ -37,7 +38,7 @@
                     </div>
                     <div class="container-form">
                         <h1 class="title"> Create Store User</h1>
-                        <form method="POST" action="../ServletCreate" class="form"> 
+                        <form method="POST" action="ServletCreate" class="form"> 
                             <label for="tex" class="label">Name:</label>
                             <input type="text" name="name" class="input" placeholder="GerardoTax" required>
                             <label for="text" class="label">Store:</label>
@@ -65,22 +66,17 @@
                             <th></th>
                           </tr>
                         </thead>
-                        <tbody>
-                            <tr>                            
-                                <% EditarDB db=new EditarDB();
-                                ArrayList<UsuarioTienda> modelList;
-                                modelList=db.listUsuarioTienda("user_store");
-                                for(int i = 0; i < modelList.size(); i++) {  
-                                %>
-                                 <td><% out.println(modelList.get(i).getNombre());%></td>
-                                 <td><% out.println(modelList.get(i).getTienda());%></td>
-                                 <td><% out.println(modelList.get(i).getNombreUsuario());%></td>
-                                 <td><%out.println("*********");%></td>
-                                 <td><% out.println(modelList.get(i).getEmail());%></td>
-                            <th scope="row"> <button class="button-secundary">Edit </button></th>
-                            <th scope="row"> <button class="button-secundary">Delete </button></th>
-                          </tr>
-                          <%}%>
+                        <tbody>       
+                            <c:forEach items="${lista}" var="usuario">
+                             <tr>
+                                <td> <c:out value="${usuario.nombre}" ></c:out></td>
+                                <td> <c:out value="${usuario.tienda}" ></c:out></td>
+                                <td> <c:out value="${usuario.nombreUsuario}" ></c:out></td>
+                                <td> <c:out value="${usuario.email }" ></c:out></td>  
+                                <th scope="row"> <button value="<c:out value="${usuario.codigo}" ></c:out>"  class="button-secundary">Edit </button></th>
+                                <th scope="row"> <button    value="<c:out value="${usuario.codigo}" ></c:out>"  class="button-secundary">Delete </button></th>
+                             </c:forEach>
+                                </tr>
                         </tbody>
                     </table>     
                 </div>

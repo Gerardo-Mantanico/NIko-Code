@@ -53,6 +53,11 @@ public class Usuario {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
+    @Override
+    public String toString() {
+        return "Usuario{" + "codigo=" + codigo + ", nombre=" + nombre + ", nombreUsuario=" + nombreUsuario + ", contrase\u00f1a=" + contraseña + '}';
+    }
     
     
 }

@@ -6,6 +6,7 @@ package BaseDatos;
 
 import Resources_servlet.ServletCreate;
 import Resources_servlet.ServletLogin;
+import clases.Producto;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,6 +23,7 @@ public class GuardarDatosEntrada {
        private  ConexionBase con= new ConexionBase();
        private PreparedStatement preparedStatement; 
     
+       //metodo para verificar usuarios
      public void  verificacionUsuario(int codigo,String usuario, String contraseña,String tipo){
             String query = "SELECT * FROM LOGIN WHERE user_name = '"+usuario+"'";
             try{
@@ -36,7 +38,7 @@ public class GuardarDatosEntrada {
             Logger.getLogger(ServletLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
      }
-     
+     // metodo para crear usuario
      public void crearUsuario(int codigo,String usuario, String contraseña, String tipo) {
        String query = "INSERT INTO LOGIN (_code,user_name, _password, _type, state) VALUES (?,?, ?,?,?)";
         try{
@@ -56,4 +58,24 @@ public class GuardarDatosEntrada {
                 Logger.getLogger(ServletCreate.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+     //metodo para crear prodcuto 
+     public void crearProductos(Producto prodcuto){
+         String query = "INSERT INTO CATALOGUE (_code, _name, cost,price,existence) VALUES (?,?, ?,?,?)";
+        try{
+            PreparedStatement preparedStatement; 
+            preparedStatement = con.conexion().prepareStatement(query);
+            preparedStatement.setInt(1, prodcuto.getCodigo());
+            preparedStatement.setString(2, prodcuto.getNombre());
+            preparedStatement.setDouble(3, prodcuto.getCosto());
+            preparedStatement.setDouble(4, prodcuto.getPrecio());
+            preparedStatement.setInt(5,prodcuto.getExistencia());
+            preparedStatement.executeUpdate();
+            System.out.println("producto creado");
+        } catch (SQLException e) {
+            System.out.println("Error al crear usuario: " + e);
+        }
+        catch (ClassNotFoundException ex) {
+                Logger.getLogger(ServletCreate.class.getName()).log(Level.SEVERE, null, ex);
+        }
+     }
 }

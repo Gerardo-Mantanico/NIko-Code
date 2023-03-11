@@ -5,6 +5,7 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,8 +29,12 @@
                         <input type="text" class="input" name="User_name" placeholder="Gerardo7897" required>
                         <label for="password" class="label">Password:</label>
                         <input type="password" name="password" placeholder="********" class="input input-password" id="password" required>
-                        <h5> </h5>       
+                        <c:forEach items="${msj}" var="mensaje">
+                             <h5> <c:out value="${mensaje}" ></c:out></h5>
+                        </c:forEach>
+                        <form method="GET" action="../ListaDatos">
                         <button type="submit" class="button">Sign up</button>
+                        </form>
                     </form>
             </div>
             </div>

@@ -17,7 +17,7 @@
 <body>
     <header class="header">
         <H1>Tienda</H1>
-        <a class="a-header" href="">Pedidos y Envios</a>
+        <a class="a-header" href="Tienda.jsp">Pedidos y Envios</a>
     </header>
     <div class="container-store">
         <div class="container-left">

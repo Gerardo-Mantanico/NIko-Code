@@ -4,11 +4,15 @@
  */
 package Resources_servlet;
 
+import BaseDatos.EditarDB;
+import clases.Usuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.security.NoSuchAlgorithmException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -17,6 +21,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import resources.ConexionBase;
+import resources.Encriptar;
 
 /**
  *
@@ -25,15 +30,7 @@ import resources.ConexionBase;
 @WebServlet(name = "ServletLogin", urlPatterns = {"/ServletLogin"})
 public class ServletLogin extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+ 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -79,30 +76,51 @@ public class ServletLogin extends HttpServlet {
             throws ServletException, IOException {
             String nombreUsuario=request.getParameter("User_name");
             String contraseña=request.getParameter("password");
+            
             ConexionBase con=new ConexionBase();
             String query = "SELECT * FROM LOGIN WHERE user_name = '"+nombreUsuario+"'";
             try{
+                Encriptar encriptar=new Encriptar();
                 PreparedStatement p = con.conexion().prepareStatement(query);
                 ResultSet r = p.executeQuery();
-                if(r.next()){
+                try {
+                   String nuevo= encriptar.hashPassword(contraseña);
+                     if(r.next()){
                     String conta=r.getString("_password");
-                    if(contraseña.equals(conta))
-                     response.sendRedirect("Venta_Administrativa/Venta_Principal.jsp");
+                    if(nuevo.equals(conta)){
+                        String tipo=r.getString("_type");
+                        switch (tipo) {
+                            case "ADMINISTRADOR":
+                                request.setAttribute("lista", listaAdmin());
+                                request.getRequestDispatcher("Venta_Administrativa/Venta_Principal.jsp").forward(request, response);
+                                // response.sendRedirect("Venta_Administrativa/Venta_Principal.jsp");
+                            break;
+                            case "TIENDA":
+                                 response.sendRedirect("Ventana_Tienda/Tienda.jsp");
+                            break;
+                            case "SUPERVISOR":
+                                 response.sendRedirect("Venta_Administrativa/Venta_Principal.jsp");
+                            break;
+                            default:
+ 
+                        }
+                    }
                     else{
-                        response.sendRedirect("Error.jsp");
+                      request.setAttribute("msj","contraseña incorrecta");
+                     request.getRequestDispatcher("index.jsp").forward(request, response); 
                     }
                 }
                 else{
-                 response.sendRedirect("index.jsp");
+                     request.setAttribute("msj","No existe este usuario");
+                     request.getRequestDispatcher("index.jsp").forward(request, response); 
                 }
-            }catch(SQLException ex){
-                
-            } catch (ClassNotFoundException ex) {
+                } catch (NoSuchAlgorithmException ex) {
+                    Logger.getLogger(ServletLogin.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                }catch(SQLException ex){
+                } catch (ClassNotFoundException ex) {
             Logger.getLogger(ServletLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-          
     }
 
     /**
@@ -114,5 +132,16 @@ public class ServletLogin extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+    
+    public ArrayList  listaAdmin(){
+          EditarDB db=new EditarDB();
+            ArrayList<Usuario> modelList;
+            modelList=db.listUsuarioTienda("user_admin");
+        return modelList;
+         
+    }
 
 }
+
+
+                    

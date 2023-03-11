@@ -2,10 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package clases;
+package resources;
 
 import BaseDatos.GuardarDB;
 import BaseDatos.GuardarDatosEntrada;
+import clases.Ejecutable;
+import clases.Producto;
+import clases.Usuario;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -16,36 +20,24 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import resources.Encriptar;
-import resources.Estado;
-
 
 /**
  *
  * @author HP
  */
-public class Ejecutable{
+public class CargaDatosEntrada {
     
-    private String  pedidos="pedidos";
     
-    public static void main(String[] args)   {
-        
-      JSONParser jsonParser = new JSONParser();
-              
-            try (FileReader reader = new FileReader("C:/Users/HP/Desktop/ingles Luis/IPC2/entrada.json"))
-            {
-                //Read JSON file
-                Object obj = jsonParser.parse(reader);
-      
-                JSONArray employeeList = (JSONArray) obj;
-                System.out.println(employeeList);
-
-                for(Object productos :employeeList ){
-                   mostrarInformacion( (JSONObject) productos );
-                    
-                }
-            
-      
+    public void leerJson(File file){
+        JSONParser jsonParser = new JSONParser();      
+        try (FileReader reader = new FileReader(file)){
+            //Read JSON file
+            Object obj = jsonParser.parse(reader);     
+            JSONArray employeeList = (JSONArray) obj;
+            System.out.println(employeeList);
+            for(Object productos :employeeList ){
+                 mostrarInformacion( (JSONObject) productos );   
+            }
             } catch (FileNotFoundException e) 
             {
                 e.printStackTrace();
@@ -58,8 +50,8 @@ public class Ejecutable{
             }        
     
     }
-
-    private static void mostrarInformacion(JSONObject jsonObject)  {
+    
+    private  void mostrarInformacion(JSONObject jsonObject)  {
         //metodo para entrar a la arrylist
        JSONObject pro= (JSONObject) jsonObject;
        JSONArray list = (JSONArray) pro.get("productos");
@@ -239,4 +231,5 @@ public class Ejecutable{
                  System.out.println("tienda:  "+ producto.get("tienda"));
             }
     }
+    
 }

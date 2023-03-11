@@ -91,7 +91,7 @@ and open the template in the editor.
                 font-size: var(--md);
                 font-weight: bold;
                 height: 50px;
-                margin-top: 70px;
+                margin-top: 50px;
 
             }
             .title{
@@ -159,6 +159,10 @@ and open the template in the editor.
                 font-size: var(--lg);
                 font-weight:  bold;
                 text-decoration: none;
-                }
+            }
+            
+            .form-file{
+                margin-left: 200px;
+            }
                
              

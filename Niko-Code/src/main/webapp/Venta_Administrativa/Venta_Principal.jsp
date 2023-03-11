@@ -8,27 +8,32 @@
 <%@page import="java.util.ArrayList"%>
 <%@page import="BaseDatos.EditarDB"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
     <html lang="en">
         <head>
             <meta charset="UTF-8">
             <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <link rel="stylesheet" href="../css/Ventana.css">
+            <link rel="stylesheet" href="css/Ventana.css">
+             <link rel="stylesheet" href="../css/Ventana.css">
             <title>Create and delete user</title>
         </head>
         <body>
             <head>
                 <div class="encabezado">
                     <nav class="nav">
-                        <a class="a-encabezado" href="Venta_Principal.jsp"> Home</a>
-                        <a class="a-encabezado" href="UsuariosTienda.jsp">Store Users</a>
-                        <a class="a-encabezado" href="UsuarioBodega.jsp">Warehouse Users</a>
-                        <a class="a-encabezado" href="SupervisorTienda.jsp">Supervisory User</a>
+                        <a class="a-encabezado" href="Ventanas?accion=admin"> Home</a>
+                        <a class="a-encabezado" href="Ventanas?accion=tienda">Store Users</a>
+                        <a class="a-encabezado" href="Ventanas?accion=bodega">Warehouse Users</a>
+                        <a class="a-encabezado" href="Ventanas?accion=supervisor">Supervisory User</a>
                         <a class="a-encabezado" href="">Reports</a>
-                        <input class="inputt" type="file"> 
                     </nav>
-
+                    <form action="ServletCreate" method="post" class="form-file" enctype="multipart/form-data">
+                        <input type="file" name="fileInput">
+                        <input value="cargarArchivo"  name="button" type="submit">
+                    </form>
                 </div>
             </head>
             <div class="container-createDelete">
@@ -38,16 +43,19 @@
                     </div>
                     <div class="container-form">
                         <h1 class="title"> Create Admin User </h1>
-                        <form method="POST" action="../ServletCreate" class="form"> 
+                        <form method="POST" action="ServletCreate" class="form">
+                            
                             <label for="tex" class="label">Name:</label>
                             <input type="text" name="name" class="input" placeholder="GerardoTax" required>
                             <label for="tex" class="label">Username:</label>
-                            <input type="text"  value="wicho" name="user_name" class="input" placeholder="Gtax419holis" required>
+                            <input type="text"  value="wi" name="user_name" class="input" placeholder="Gtax419holis" required>
                             <label for="password" class="label" >Password:</label>
                             <input type="password" name="password" class="input" placeholder="*******" required>
+                            <c:forEach items="${msj}" var="mensaje">
+                                <h5> <c:out value="${mensaje}" ></c:out></h5>
+                            </c:forEach>
                             <button class="button" value="admin" name="button" >Create</button>
                         </form>
-
                     </div>
                 </div>
                 <div class="container-list">
@@ -60,20 +68,18 @@
                             <th></th>
                           </tr>
                         </thead>
-                        <tbody>
-                            <tr>
-                               <% EditarDB db=new EditarDB();
-                                ArrayList<Usuario> modelList;
-                                modelList=db.listUsuarioTienda("user_admin");
-                                for(int i = 0; i < modelList.size(); i++) {  
-                                %>
-                                 <td><% out.println(modelList.get(i).getNombre());%></td>
-                                 <td><% out.println(modelList.get(i).getNombreUsuario());%></td>
-                                 <td><%out.println(modelList.get(i).getContraseña());%></td>
-                            <th scope="row"> <button class="button-secundary">Edit </button></th>
-                            <th scope="row"> <button class="button-secundary">Delete </button></th>
-                          </tr>
-                          <%}%>
+                        <tbody>       
+                            <c:forEach items="${lista}" var="usuario">
+                             <tr>
+                                 <td> <c:out value="${usuario.nombre}" ></c:out></td>
+                                <td> <c:out value="${usuario.nombreUsuario}" ></c:out></td>     
+                                <form method="POST" action="EditarDatos" class="form"> 
+                                <th scope="row"> <button  name="editar" value="<c:out value="${usuario.codigo}" ></c:out>"  class="button-secundary">Edit </button></th>
+                                <th>   <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>  </th>
+                                <th scope="row"> <button  value="<c:out value="${usuario.codigo}" ></c:out>"  class="button-secundary"><c:out value="${usuario.codigo}" ></c:out></button></th>
+                                </form>
+                             </c:forEach>
+                                </tr>
                         </tbody>
                     </table>     
                 </div>

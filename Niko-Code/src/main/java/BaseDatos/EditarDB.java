@@ -72,5 +72,29 @@ public class EditarDB {
         return list;
     }
 
-    
+     public Usuario buscarAdmin(int codigo){
+         Usuario admin=new Usuario();
+           String query="SELECT* FROM  user_admin where _code="+codigo;
+        try {
+            stamente = con.conexion().createStatement();
+        
+            r = stamente.executeQuery(query);
+            while(r.next()){
+                        Usuario usuario=new Usuario();
+                        usuario.setCodigo(r.getInt("_code"));
+                        usuario.setNombre(r.getString("_name"));
+                        usuario.setNombreUsuario(r.getString("user_name"));
+                        usuario.setContraseña(r.getString("_password"));
+            }
+            } catch (ClassNotFoundException ex) {
+            Logger.getLogger(EditarDB.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            catch (SQLException ex) {
+            Logger.getLogger(EditarDB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return admin;
+     }
+     
+     
+     
 }
