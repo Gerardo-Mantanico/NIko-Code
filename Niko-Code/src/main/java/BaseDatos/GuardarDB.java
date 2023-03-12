@@ -143,6 +143,40 @@ public class GuardarDB {
         }  
     }   
     
-      
+    //metodo para crear usuario bodega
+    public void crearbodega(UsuarioSupervisor supervisor, int codigo) {
+        String query = "INSERT INTO warehouse (_code, _name, user_name, _password, email) VALUES (?, ?, ?,?, ?)";
+        try{
+            PreparedStatement preparedStatement; 
+            preparedStatement = con.conexion().prepareStatement(query);
+            preparedStatement.setInt(1, codigo);
+            preparedStatement.setString( 2,supervisor.getNombre());
+            preparedStatement.setString( 3,supervisor.getNombreUsuario());
+            preparedStatement.setString( 4,supervisor.getContraseña());
+            preparedStatement.setString( 5,supervisor.getEmail());
+            preparedStatement.executeUpdate();
+            System.out.println("Usuario Administrador registrado");
+        } catch (SQLException e) {
+            System.out.println("Error al crear usuario: " + e);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ServletCreate.class.getName()).log(Level.SEVERE, null, ex);
+        }  
+    }   
+     
+    //metodo de lista de tiendas de usuario de bodega
+    public void listatiendaBodega(int codigoUsuario, int tienda){
+         String query = "INSERT INTO warehouse_store (_code, store) VALUES (?, ?)";
+        try{
+            PreparedStatement preparedStatement; 
+            preparedStatement = con.conexion().prepareStatement(query);
+            preparedStatement.setInt(1, codigoUsuario);
+            preparedStatement.setInt(2, tienda);
+            System.out.println("Usuarioregistrado");
+        } catch (SQLException e) {
+            System.out.println("Error al crear usuario: " + e);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(ServletCreate.class.getName()).log(Level.SEVERE, null, ex);
+        }  
+    }
  
 }

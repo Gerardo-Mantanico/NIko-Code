@@ -40,7 +40,7 @@ public class ServletCreate extends HttpServlet {
     int code;
     Encriptar encriptar=new Encriptar();
     GuardarDB Db =new GuardarDB();
-   
+    boolean estado;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -72,6 +72,7 @@ public class ServletCreate extends HttpServlet {
                 File archivo= new File(path+"/"+nombreArch);
                 CargaDatosEntrada carga=new CargaDatosEntrada();
                 carga.leerJson(archivo);
+                carga.leerJson(archivo);
                 request.setAttribute("lista", lista("user_admin"));
                 request.getRequestDispatcher("Venta_Administrativa/Venta_Principal.jsp").forward(request, response); 
                 
@@ -81,7 +82,7 @@ public class ServletCreate extends HttpServlet {
                 usuario.setNombre(request.getParameter("name"));
                 usuario.setNombreUsuario(request.getParameter("user_name"));
                 usuario.setContraseña(encriptar.hashPassword(request.getParameter("password")));
-                boolean estado= Db.verificacionUsuario(usuario.getNombreUsuario(),usuario.getContraseña()  ,Estado.ADMINISTRADOR.name());
+                estado= Db.verificacionUsuario(usuario.getNombreUsuario(),usuario.getContraseña()  ,Estado.ADMINISTRADOR.name());
                if(estado==false){
                 code=Db.buscarCodigo(usuario.getNombreUsuario());
                 Db.crearAdmin(usuario ,code);
@@ -94,12 +95,9 @@ public class ServletCreate extends HttpServlet {
                    request.setAttribute("lista", lista("user_admin"));
                    request.setAttribute("msj","Este usuario ya existe");
                    request.getRequestDispatcher("Venta_Administrativa/Venta_Principal.jsp").forward(request, response); 
-             
                }
-               
-             
-                
                 break;
+                
             case "Tienda":
                 UsuarioTienda userTienda=new UsuarioTienda();
                 userTienda.setNombre(request.getParameter("name"));
@@ -108,11 +106,18 @@ public class ServletCreate extends HttpServlet {
                 userTienda.setNombreUsuario(request.getParameter("user_name"));
                 userTienda.setContraseña(encriptar.hashPassword(request.getParameter("password")));
                 userTienda.setEmail(request.getParameter("email"));  
-                Db.verificacionUsuario(userTienda.getNombreUsuario(),userTienda.getContraseña()   ,Estado.TIENDA.name());
-                code=Db.buscarCodigo(userTienda.getNombreUsuario());
-                Db.crearUsuarioTienda(userTienda,  code);
-                request.setAttribute("lista", lista("user_store"));
-                request.getRequestDispatcher("Venta_Administrativa/UsuariosTienda.jsp").forward(request, response); 
+                estado=Db.verificacionUsuario(userTienda.getNombreUsuario(),userTienda.getContraseña()   ,Estado.TIENDA.name());
+                if(estado==false){
+                    code=Db.buscarCodigo(userTienda.getNombreUsuario());
+                    Db.crearUsuarioTienda(userTienda,  code);
+                    request.setAttribute("lista", lista("user_store"));
+                    request.getRequestDispatcher("Venta_Administrativa/UsuariosTienda.jsp").forward(request, response); 
+                }
+                else{
+                    request.setAttribute("lista", lista("user_store"));
+                    request.getRequestDispatcher("Venta_Administrativa/UsuariosTienda.jsp").forward(request, response); 
+                }
+                
                 break;
             case "Supervisor":
                     UsuarioSupervisor supervisor=new UsuarioSupervisor();
@@ -120,9 +125,13 @@ public class ServletCreate extends HttpServlet {
                     supervisor.setNombreUsuario(request.getParameter("user_name"));
                     supervisor.setEmail(request.getParameter("email"));
                     supervisor.setContraseña(encriptar.hashPassword(request.getParameter("password")));
-                    Db.verificacionUsuario(supervisor.getNombreUsuario(),supervisor.getContraseña()   ,Estado.SUPERVISOR.name());
-                    code=Db.buscarCodigo(supervisor.getNombreUsuario());
-                    Db.crearSupervisor(supervisor, code);
+                   estado= Db.verificacionUsuario(supervisor.getNombreUsuario(),supervisor.getContraseña()   ,Estado.SUPERVISOR.name());
+                   if(estado==false){
+                       code=Db.buscarCodigo(supervisor.getNombreUsuario());
+                       Db.crearSupervisor(supervisor, code);
+                       request.setAttribute("lista", lista("supervisory"));
+                       request.getRequestDispatcher("Venta_Administrativa/SupervisorTienda.jsp").forward(request, response); 
+                   }
                     request.setAttribute("lista", lista("supervisory"));
                     request.getRequestDispatcher("Venta_Administrativa/SupervisorTienda.jsp").forward(request, response); 
                 break;

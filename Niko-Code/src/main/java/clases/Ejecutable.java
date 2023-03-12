@@ -171,7 +171,8 @@ public class Ejecutable{
             JSONArray listatiendas = (JSONArray) userBodega.get("tiendas");
             System.out.println("tiendas");
                 for( Object tienda: listatiendas){
-                    System.out.println("            "+tienda);
+                     int valor=Integer.valueOf(tienda.toString());
+                    System.out.println("            "+ userBodega.get("codigo")+"  "+valor);
                 }
         }
         

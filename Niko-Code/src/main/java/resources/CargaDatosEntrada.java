@@ -7,13 +7,20 @@ package resources;
 import BaseDatos.GuardarDB;
 import BaseDatos.GuardarDatosEntrada;
 import clases.Ejecutable;
+import clases.Envios;
+import clases.Incidencia;
+import clases.Pedido;
 import clases.Producto;
+import clases.Tienda;
 import clases.Usuario;
+import clases.UsuarioSupervisor;
+import clases.UsuarioTienda;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.json.simple.JSONArray;
@@ -27,6 +34,9 @@ import org.json.simple.parser.ParseException;
  */
 public class CargaDatosEntrada {
     
+    GuardarDB DB=new GuardarDB();
+    GuardarDatosEntrada base=new GuardarDatosEntrada();
+    boolean estado;
     
     public void leerJson(File file){
         JSONParser jsonParser = new JSONParser();      
@@ -60,176 +70,224 @@ public class CargaDatosEntrada {
            JSONObject a= (JSONObject) produ;
            System.out.println("-----------------");
            Producto producto=new Producto();
-           long codigo = (long) a.get("codigo");
-           String nombre = (String) a.get("nombre");
-           long existencia= (long) a.get("existencias");
-           System.out.println("codigo: "+codigo);
-           System.out.println("nombre: "+nombre);
-           System.out.println("costo: "+ a.get("costo"));
-           System.out.println("precio: "+ a.get("precio"));
-           System.out.println("existencia: "+existencia);
            GuardarDatosEntrada base=new GuardarDatosEntrada();
-           producto.setCodigo( (int) codigo );
-           producto.setNombre((String) a.get("nombre"));
-           try {
-                  producto.setCosto((double) a.get("costo"));
-           }catch (Exception e){
-               long costoU= (long) a.get("costo");
-               producto.setCosto( (double) costoU);}
-            try {
-                producto.setPrecio((long) a.get("precio"));
-             }catch (Exception e){
-                producto.setPrecio((double) a.get("precio"));
-             }
-           producto.setExistencia((int) existencia);
+           producto.setCodigo( this.convertirLongInt(a.get("codigo")) );
+           producto.setNombre((String) a.get("nombre"));    
+           producto.setCosto(convertirLongDouble(a.get("costo")));
+           producto.setPrecio(convertirLongDouble(a.get("precio")));
+           producto.setExistencia(convertirLongInt(a.get("existencias")));
            base.crearProductos(producto);
        }
-       
        //para cargar los datos de tienda
        JSONArray lista = (JSONArray) pro.get("tiendas");
         for(Object tienda:lista){
            JSONObject a= (JSONObject) tienda;
-           System.out.println("***********");
-           System.out.println("codigo: "+a.get("codigo"));
-           System.out.println("nombre: "+a.get("direccion"));
-           System.out.println("costo: "+ a.get("tipo"));
-           JSONArray listaprodcutos = (JSONArray) a.get("productos");
+           Tienda tiendas= new Tienda();
+            tiendas.setCodigo(this.convertirLongInt(a.get("codigo")));
+            tiendas.setDireccion((String) a.get("direccion"));
+            tiendas.setTipo((String) a.get("tipo"));
+            base.CrearTiendas(tiendas);
+            JSONArray listaprodcutos = (JSONArray) a.get("productos");
                 for( Object productos: listaprodcutos){
                     JSONObject e= (JSONObject) productos;
-                    System.out.println("         codigo: "+e.get("codigo"));
-                    System.out.println("         existencia: "+e.get("existencias")); 
+                    base.ProductoTiendas(tiendas.getCodigo(), convertirLongInt(e.get("codigo")), convertirLongInt(e.get("existencias")) );
                 }
        }
-           
         //metodo parar cargar admin
         JSONArray listaAdmin = (JSONArray) pro.get("admins");
         for(Object admin:listaAdmin){
             Usuario usuarioadmin=new Usuario();
-           JSONObject user= (JSONObject) admin;
-           System.out.println("////////////// admin");
-           System.out.println("codigo: "+user.get("codigo"));
-           System.out.println("nombre: "+user.get("nombre"));
-           System.out.println("username: "+user.get("username"));
-           System.out.println("contraseña: "+user.get("password"));
-           Encriptar encriptar=new Encriptar();
-           long codigo= (long) user.get("codigo");
-           int at = (int) codigo;
-           String nombre=(String) user.get("nombre");
-           String usuario= (String)user.get("username");
-           String contraseña= (String)user.get("password");
-           usuarioadmin.setCodigo(at);
-           usuarioadmin.setNombre(nombre);
-           usuarioadmin.setNombreUsuario(usuario);
-           try {
-               usuarioadmin.setContraseña(encriptar.hashPassword(contraseña));
-               GuardarDB DB=new GuardarDB();
-               GuardarDatosEntrada base=new GuardarDatosEntrada();
-               base.verificacionUsuario(at,usuario, encriptar.hashPassword(contraseña), Estado.ADMINISTRADOR.name());
-               DB.crearAdmin(usuarioadmin ,at);
-           } catch (NoSuchAlgorithmException ex) {
-               Logger.getLogger(Ejecutable.class.getName()).log(Level.SEVERE, null, ex);
-           }
-          
-           
+            JSONObject user= (JSONObject) admin;
+            usuarioadmin.setCodigo(convertirLongInt(user.get("codigo")));
+            usuarioadmin.setNombre( (String) user.get("nombre"));
+            usuarioadmin.setNombreUsuario((String) user.get("username"));
+            usuarioadmin.setContraseña(contraseñaIncriptada((String) user.get("password")));
+            base.verificacionUsuario(convertirLongInt(user.get("codigo")),(String) user.get("username"), contraseñaIncriptada((String) user.get("password")), Estado.ADMINISTRADOR.name());
+            DB.crearAdmin(usuarioadmin ,convertirLongInt(user.get("codigo")));
         }
         
         //metodo para cargar usuariostienda
-         System.out.println("////////////// usuarios de tienda");
+        System.out.println("////////////// usuarios de tienda");
         JSONArray listUsuariostienda =(JSONArray) pro.get("usuariostienda");
         for(Object usuarioTienda: listUsuariostienda){
             JSONObject userTienda= (JSONObject) usuarioTienda;
-            System.out.println("codigo:  "+ userTienda.get("codigo"));
-            System.out.println("nombre:  "+ userTienda.get("nombre"));
+            UsuarioTienda user =new UsuarioTienda();
+            user.setCodigo(convertirLongInt(userTienda.get("codigo")));
+            user.setNombre((String) userTienda.get("nombre"));
+            user.setTienda(convertirLongInt(userTienda.get("tienda")));
+            user.setNombreUsuario((String) userTienda.get("username"));
+            user.setContraseña(contraseñaIncriptada((String) userTienda.get("password")));
+            user.setEmail((String) userTienda.get("email"));
+            base.verificacionUsuario(user.getCodigo(),user.getNombreUsuario(),user.getContraseña(), Estado.TIENDA.name());
+            DB.crearUsuarioTienda(user, user.getCodigo());
         }
         
         // metodo para cargar supervisores
-         System.out.println("////////////// supervisor");
-         JSONArray listsupervisor =(JSONArray) pro.get("supervisores");
+        System.out.println("////////////// supervisor");
+        JSONArray listsupervisor =(JSONArray) pro.get("supervisores");
         for(Object usuariosupervisor: listsupervisor){
             JSONObject userSupervisor= (JSONObject) usuariosupervisor;
-            System.out.println("codigo:  "+ userSupervisor.get("codigo"));
-            System.out.println("nombre:  "+ userSupervisor.get("nombre"));
+            UsuarioSupervisor user= new UsuarioSupervisor();
+            user.setCodigo(convertirLongInt(userSupervisor.get("codigo")));
+            user.setNombre((String) userSupervisor.get("nombre"));
+            user.setNombreUsuario((String) userSupervisor.get("username"));
+            user.setContraseña(contraseñaIncriptada((String) userSupervisor.get("password")));
+            user.setEmail((String) userSupervisor.get("email"));
+            base.verificacionUsuario(user.getCodigo(),user.getNombreUsuario(),user.getContraseña(), Estado.SUPERVISOR.name());
+            DB.crearSupervisor(user, user.getCodigo());
         }
-        
-        
          
         // metodo para cargar encargados de bodega 
-         System.out.println("////////////// Bodega");
-         JSONArray listBodega =(JSONArray) pro.get("encargadosBodega");
+        System.out.println("////////////// Bodega");
+        JSONArray listBodega =(JSONArray) pro.get("encargadosBodega");
         for(Object usuarioBodega: listBodega){
             JSONObject userBodega= (JSONObject) usuarioBodega;
-            System.out.println("codigo:  "+ userBodega.get("codigo"));
-            System.out.println("nombre:  "+ userBodega.get("nombre"));
+            UsuarioSupervisor user= new UsuarioSupervisor();
+            user.setCodigo(convertirLongInt(userBodega.get("codigo")));
+            user.setNombre((String) userBodega.get("nombre"));
+            user.setNombreUsuario((String) userBodega.get("username"));
+            user.setContraseña(contraseñaIncriptada((String) userBodega.get("password")));
+            user.setEmail((String) userBodega.get("email"));
+            estado=base.verificacionUsuario(user.getCodigo(), user.getNombreUsuario(), user.getContraseña(),Estado.BODEGA.name());
+            DB.crearbodega(user, user.getCodigo());
             JSONArray listatiendas = (JSONArray) userBodega.get("tiendas");
-            System.out.println("tiendas");
                 for( Object tienda: listatiendas){
-                    System.out.println("            "+tienda);
+                    int valor=Integer.valueOf(tienda.toString());
+                    DB.listatiendaBodega(user.getCodigo(), valor);
                 }
         }
-        
-        
         //metodo para cargar pedidos
         System.out.println("------------------ pedidos");
          JSONArray listPedidos =(JSONArray) pro.get("pedidos");
         for(Object pedidos: listPedidos){
             JSONObject pedido= (JSONObject) pedidos;
-            System.out.println("id:  "+ pedido  .get("id"));
-            System.out.println("tienda:  "+ pedido.get("tienda"));
-            System.out.println("****** productos");
+            Pedido pedidoss= new Pedido();
+            pedidoss.setId(convertirLongInt(pedido.get("id")));
+            pedidoss.setTienda(convertirLongInt(pedido.get("tienda")));
+            pedidoss.setCodigoUsuario(convertirLongInt(pedido.get("usuario")));
+            pedidoss.setFecha(Date.valueOf( (String) pedido.get("fecha")));
             JSONArray listPedidoProducto =(JSONArray) pedido.get("productos");
             for( Object productos: listPedidoProducto ){
                  JSONObject producto= (JSONObject) productos;
-                 System.out.println("       codigo:  "+ producto.get("codigo"));
-                 System.out.println("       costoU:  "+ producto.get("costoU"));
+                 Producto productoss=new Producto();
+                 productoss.setCodigo(convertirLongInt(producto.get("codigo")));
+                 productoss.setPrecio(convertirLongDouble(producto.get("costoU")));
+                 productoss.setExistencia(convertirLongInt(producto.get("cantidad")));
+                 productoss.setCosto(convertirLongDouble(producto.get("costoTotal")));
+                 base.listapedido(productoss, pedidoss.getId());
             }
-            System.out.println("Estado:  "+ pedido.get("estado"));
+            
+            pedidoss.setTotal(convertirLongDouble(pedido.get("total")));
+            pedidoss.setEstado((String) pedido.get("estado"));
+            base.pedido(pedidoss);
         }
          //metodo para enviar
-         
-         System.out.println("------------------ envios");
-         JSONArray listenvio =(JSONArray) pro.get("envios");
+
+        JSONArray listenvio =(JSONArray) pro.get("envios");
         for(Object envios: listenvio){
             JSONObject envio= (JSONObject) envios;
-            System.out.println("id:  "+ envio  .get("id"));
-            System.out.println("tienda:  "+ envio.get("tienda"));
-            System.out.println("****** productos");
-            JSONArray listPedidoProducto =(JSONArray) envio.get("productos");
-            for( Object productos: listPedidoProducto ){
+            Envios envioss =new Envios();
+             envioss.setId(convertirLongInt(envio.get("id")));
+             envioss.setTienda(convertirLongInt(envio.get("tienda")));
+             envioss.setCodigoUsuario(this.convertirLongInt(envio.get("usuario")));
+             envioss.setFechaSalida(Date.valueOf((String) envio.get("fechaSalida")));
+             envioss.setFechaRecibido(Date.valueOf((String) envio.get("fechaRecibido")));
+            
+            JSONArray listEnvioProducto =(JSONArray) envio.get("productos");
+            for( Object productos: listEnvioProducto ){
                  JSONObject producto= (JSONObject) productos;
-                 System.out.println("       codigo:  "+ producto.get("codigo"));
-                 System.out.println("       costoU:  "+ producto.get("costoU"));
+                 Producto lisproduc=new Producto();
+                 lisproduc.setCodigo(convertirLongInt(producto.get("codigo")));
+                 lisproduc.setPrecio(convertirLongDouble(producto.get("costoU")));
+                 lisproduc.setExistencia(convertirLongInt(producto.get("cantidad")));
+                 lisproduc.setCosto(convertirLongDouble(producto.get("costoTotal")));
+                 base.listaenvio(lisproduc, envioss.getId());
             }
-            System.out.println("Estado:  "+ envio.get("estado"));
+            envioss.setTotal(this.convertirLongDouble(envio.get("total")));
+            envioss.setEstado((String) envio.get("estado"));
+            base.Crearenvios(envioss);
         }
          
-        //metodo parar incidencias
-       System.out.println("------------------ incidencias");
-         JSONArray listIncidencias =(JSONArray) pro.get("incidencias");
+        //metodo para crear incidencias
+        System.out.println("------------------ incidencias");
+        JSONArray listIncidencias =(JSONArray) pro.get("incidencias");
         for(Object incidencias: listIncidencias){
             JSONObject incidencia= (JSONObject) incidencias;
-            System.out.println("id:  "+ incidencia  .get("id"));
-            System.out.println("tienda:  "+ incidencia.get("tienda"));
-            System.out.println("****** productos");
+            Incidencia inci=new Incidencia();
+            inci.setId(convertirLongInt(incidencia.get("id")));
+            inci.setTienda(convertirLongInt(incidencia.get("tienda")));
+            inci.setCodigoUsuario(convertirLongInt(incidencia.get("usuario")));
+            inci.setFecha(Date.valueOf((String) incidencia.get("fecha")));
             JSONArray listPedidoProducto =(JSONArray) incidencia.get("productos");
             for( Object productos: listPedidoProducto ){
                  JSONObject producto= (JSONObject) productos;
-                 System.out.println("       codigo:  "+ producto.get("codigo"));
-                 System.out.println("       cantidad:  "+ producto.get("cantidad"));
+                 base.listIncidencias(inci.getId() , convertirLongInt(producto.get("codigo")), convertirLongInt(producto.get("cantidad")), (String) producto.get("motivo"));      
             }
-            System.out.println("Estado:  "+ incidencia.get("estado"));
+            inci.setSolucion((String) incidencia.get("solucion"));
+            inci.setEstado((String) incidencia.get("estado"));
+            base.Incidencias(inci);
         }
-     
-        cargarArchivo("devoluciones",pro);
+        
+        //metodo para crear devoluciones
+        System.out.println("****** devoluciones");
+        JSONArray listDevoluciones =(JSONArray) pro.get("devoluciones");
+            for( Object devolucion: listDevoluciones ){
+                 JSONObject devo= (JSONObject) devolucion;
+                 Pedido devoluciones =new Pedido();
+                 devoluciones.setId(this.convertirLongInt(devo.get("id")));
+                 devoluciones.setTienda(this.convertirLongInt(devo.get("tienda")));
+                 devoluciones.setCodigoUsuario(this.convertirLongInt(devo.get("usuario")));
+                 devoluciones.setFecha( Date.valueOf((String) devo.get("fecha")));
+                 JSONArray listDevolucionesProducto =(JSONArray) devo.get("productos");
+                 for( Object productos: listDevolucionesProducto ){
+                    JSONObject producto= (JSONObject) productos;
+                    Producto productoss=new Producto();
+                    productoss.setCodigo(this.convertirLongInt(producto.get("codigo")));
+                    productoss.setPrecio(this.convertirLongDouble(producto.get("costo")));
+                    productoss.setExistencia(this.convertirLongInt(producto.get("cantidad")));
+                    productoss.setCosto(this.convertirLongDouble(producto.get("costoTotal")));
+                    base.listaDevolucion(productoss, devoluciones.getId(), (String) producto.get("motivo"));
+                 }
+                 devoluciones.setTotal(this.convertirLongDouble(devo.get("total")));
+                 devoluciones.setEstado((String) devo.get("estado"));
+                 base.crearDevoluciones(devoluciones);
+
+            }
+        
+        
+  
        }
     
-    public static void  cargarArchivo(String tipo, JSONObject objetoentra){
-           System.out.println("****** "+tipo);
-            JSONArray list =(JSONArray) objetoentra.get(tipo);
-            for( Object productos: list ){
-                 JSONObject producto= (JSONObject) productos;
-                 System.out.println("id:  "+ producto.get("id"));
-                 System.out.println("tienda:  "+ producto.get("tienda"));
-            }
+ 
+    
+    public String   contraseñaIncriptada(String contraseña){
+        String password="";
+        try {
+            Encriptar encriptar= new Encriptar();
+           password= encriptar.hashPassword(contraseña);
+        } catch (NoSuchAlgorithmException ex) {
+            Logger.getLogger(CargaDatosEntrada.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return password;
     }
     
+    public int convertirLongInt(Object objeto){
+         long valor= (long) objeto;
+         int numero= (int) valor;
+        return numero;
+    }
+    
+    public double convertirLongDouble(Object objeto){
+        double decimal=0;
+        try {
+              decimal= (double) objeto;     
+           }catch (Exception e){
+               long costoU= (long) objeto; 
+               decimal=  (double) costoU;
+           }
+        return decimal;
+    }
+    
+    
+     
 }
