@@ -34,6 +34,7 @@
                         <input type="file" name="fileInput">
                         <input value="cargarArchivo"  name="button" type="submit">
                     </form>
+                    <a class="a-encabezado" href="index.jsp"> Salir</a>
                 </div>
             </head>
             <div class="container-createDelete">
@@ -44,7 +45,6 @@
                     <div class="container-form">
                         <h1 class="title"> Create Admin User </h1>
                         <form method="POST" action="ServletCreate" class="form">
-                            
                             <label for="tex" class="label">Name:</label>
                             <input type="text" name="name" class="input" placeholder="GerardoTax" required>
                             <label for="tex" class="label">Username:</label>

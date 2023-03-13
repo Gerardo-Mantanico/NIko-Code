@@ -93,10 +93,18 @@ public class ServletLogin extends HttpServlet {
                             case "ADMINISTRADOR":
                                 request.setAttribute("lista", listaAdmin());
                                 request.getRequestDispatcher("Venta_Administrativa/Venta_Principal.jsp").forward(request, response);
-                                // response.sendRedirect("Venta_Administrativa/Venta_Principal.jsp");
                             break;
                             case "TIENDA":
-                                 response.sendRedirect("Ventana_Tienda/Tienda.jsp");
+                                String userTienda="SELECT * FROM user_store WHERE user_name = '"+nombreUsuario+"'";
+                                PreparedStatement pa = con.conexion().prepareStatement(userTienda);
+                                ResultSet rr = pa.executeQuery();
+                                if(rr.next()){
+                                    request.setAttribute("fecha", "2023-02-04");
+                                    request.setAttribute("codigoUsuario", String.valueOf(r.getInt("_code")));
+                                    request.setAttribute("tienda", String.valueOf(rr.getInt("store")));
+                                    request.setAttribute("lista", this.lista("catalogue"));
+                                    request.getRequestDispatcher("Ventana_Tienda/Tienda.jsp").forward(request, response);
+                                 }
                             break;
                             case "SUPERVISOR":
                                  response.sendRedirect("Venta_Administrativa/Venta_Principal.jsp");
@@ -140,6 +148,13 @@ public class ServletLogin extends HttpServlet {
         return modelList;
          
     }
+     public ArrayList  lista(String query){
+            EditarDB db=new EditarDB();
+            ArrayList list = new ArrayList();
+            list=db.listUsuarioTienda(query);
+        return list;
+     }
+    
 
 }
 

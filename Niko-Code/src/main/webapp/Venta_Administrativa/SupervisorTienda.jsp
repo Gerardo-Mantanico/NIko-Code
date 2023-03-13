@@ -47,6 +47,9 @@
                             <input type="password" name="password" class="input" placeholder="*******" required>
                             <label for="email" class="label" >Email address:</label>
                             <input type="email" name="email" class="input" placeholder="GerardoTax@gmail.com" required>
+                            <c:forEach items="${msj}" var="mensaje">
+                                <h5> <c:out value="${mensaje}" ></c:out></h5>
+                            </c:forEach>
                             <button class="button" name="button" value="Supervisor" >Save</button>
                         </form>
 

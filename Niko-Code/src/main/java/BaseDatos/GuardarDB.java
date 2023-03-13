@@ -164,19 +164,21 @@ public class GuardarDB {
     }   
      
     //metodo de lista de tiendas de usuario de bodega
-    public void listatiendaBodega(int codigoUsuario, int tienda){
-         String query = "INSERT INTO warehouse_store (_code, store) VALUES (?, ?)";
+    public void listaTiendaBodega( int codigoUsuario, int tienda) {
+        String query = "INSERT INTO listatiendabodega (_code, tienda) VALUES (?, ?)";
         try{
             PreparedStatement preparedStatement; 
             preparedStatement = con.conexion().prepareStatement(query);
             preparedStatement.setInt(1, codigoUsuario);
-            preparedStatement.setInt(2, tienda);
-            System.out.println("Usuarioregistrado");
+            preparedStatement.setInt( 2,tienda);
+            preparedStatement.executeUpdate();
+            System.out.println("usario de bodegas con tiendas guardado");
         } catch (SQLException e) {
             System.out.println("Error al crear usuario: " + e);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ServletCreate.class.getName()).log(Level.SEVERE, null, ex);
         }  
-    }
+    }   
+    
  
 }

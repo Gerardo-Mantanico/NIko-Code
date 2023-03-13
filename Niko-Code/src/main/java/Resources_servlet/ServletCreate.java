@@ -110,11 +110,13 @@ public class ServletCreate extends HttpServlet {
                 if(estado==false){
                     code=Db.buscarCodigo(userTienda.getNombreUsuario());
                     Db.crearUsuarioTienda(userTienda,  code);
+                    request.setAttribute("msj","Usuario Tienda creado creado");
                     request.setAttribute("lista", lista("user_store"));
                     request.getRequestDispatcher("Venta_Administrativa/UsuariosTienda.jsp").forward(request, response); 
                 }
                 else{
                     request.setAttribute("lista", lista("user_store"));
+                    request.setAttribute("msj","Este usuario ya existe");
                     request.getRequestDispatcher("Venta_Administrativa/UsuariosTienda.jsp").forward(request, response); 
                 }
                 
@@ -129,11 +131,16 @@ public class ServletCreate extends HttpServlet {
                    if(estado==false){
                        code=Db.buscarCodigo(supervisor.getNombreUsuario());
                        Db.crearSupervisor(supervisor, code);
+                       request.setAttribute("msj","Usuario supervisor creado creado");
                        request.setAttribute("lista", lista("supervisory"));
                        request.getRequestDispatcher("Venta_Administrativa/SupervisorTienda.jsp").forward(request, response); 
                    }
-                    request.setAttribute("lista", lista("supervisory"));
-                    request.getRequestDispatcher("Venta_Administrativa/SupervisorTienda.jsp").forward(request, response); 
+                   else{
+                       request.setAttribute("msj","Este usuario ya existe intente con uno nuevo");
+                       request.setAttribute("lista", lista("supervisory"));
+                       request.getRequestDispatcher("Venta_Administrativa/SupervisorTienda.jsp").forward(request, response); 
+                   }
+                    
                 break;
             default:}  
             } catch (NoSuchAlgorithmException ex) {

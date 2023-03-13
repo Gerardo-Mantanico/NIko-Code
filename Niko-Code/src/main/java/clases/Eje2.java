@@ -5,6 +5,7 @@
 package clases;
 
 import BaseDatos.EditarDB;
+import BaseDatos.GuardarDatosEntrada;
 import java.util.ArrayList;
 import resources.CargaDatosEntrada;
 
@@ -15,7 +16,8 @@ import resources.CargaDatosEntrada;
 public class Eje2 {
     public static void main(String args[]){
          CargaDatosEntrada carga=new CargaDatosEntrada();
-         
+         GuardarDatosEntrada d= new GuardarDatosEntrada();
+          System.out.println(d.IdMax());
              
          }
 }

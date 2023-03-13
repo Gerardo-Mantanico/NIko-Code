@@ -14,6 +14,7 @@ import clases.Tienda;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import resources.ConexionBase;
@@ -297,5 +298,26 @@ public class GuardarDatosEntrada {
         catch (ClassNotFoundException ex) {
                 Logger.getLogger(ServletCreate.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    public int IdMax(){
+        int id=0;
+        String query="SELECT MAX(id) AS id FROM pedido";
+        PreparedStatement preparedStatement; 
+           try {
+               Statement stamente;
+               ResultSet r;
+               stamente = con.conexion().createStatement();
+               r = stamente.executeQuery(query);
+            if (r.next()) {
+                id=r.getInt(1);
+            }
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(GuardarDatosEntrada.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(GuardarDatosEntrada.class.getName()).log(Level.SEVERE, null, ex);
+        }
+           return id;
+
+
     }
 }

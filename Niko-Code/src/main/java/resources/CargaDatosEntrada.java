@@ -150,10 +150,11 @@ public class CargaDatosEntrada {
             user.setEmail((String) userBodega.get("email"));
             estado=base.verificacionUsuario(user.getCodigo(), user.getNombreUsuario(), user.getContraseña(),Estado.BODEGA.name());
             DB.crearbodega(user, user.getCodigo());
-            JSONArray listatiendas = (JSONArray) userBodega.get("tiendas");
-                for( Object tienda: listatiendas){
+            JSONArray listatiendass = (JSONArray) userBodega.get("tiendas");
+                for( Object tienda: listatiendass){
                     int valor=Integer.valueOf(tienda.toString());
-                    DB.listatiendaBodega(user.getCodigo(), valor);
+                    System.out.println(user.getCodigo()+"   "+ valor);
+                   DB.listaTiendaBodega(user.getCodigo(), valor);
                 }
         }
         //metodo para cargar pedidos
@@ -191,7 +192,7 @@ public class CargaDatosEntrada {
              envioss.setTienda(convertirLongInt(envio.get("tienda")));
              envioss.setCodigoUsuario(this.convertirLongInt(envio.get("usuario")));
              envioss.setFechaSalida(Date.valueOf((String) envio.get("fechaSalida")));
-             envioss.setFechaRecibido(Date.valueOf((String) envio.get("fechaRecibido")));
+             //envioss.setFechaRecibido(Date.valueOf((String) envio.get("fechaRecibido")));
             
             JSONArray listEnvioProducto =(JSONArray) envio.get("productos");
             for( Object productos: listEnvioProducto ){

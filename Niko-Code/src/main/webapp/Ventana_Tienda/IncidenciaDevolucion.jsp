@@ -34,7 +34,11 @@
                         <label for="number" class="label">cantidad:</label>
                         <input type="number" name="" id="" class="input-number">
                         <label for="text" class= "label">Productos:</label>
-                        <select name="" id=""></select>
+                        <c:forEach items="${lista}" var="usuario">
+                            <select name="" id="">
+                                <option value="value1"><c:out value="${usuario.nombre}" ></c:out></option>
+                            </select>
+                        </c:forEach>
                         <label for="text" class= "label">Motivo:</label>
                         <select name="" id=""></select>
                         <input type="button" value="buscar" class="input-button">

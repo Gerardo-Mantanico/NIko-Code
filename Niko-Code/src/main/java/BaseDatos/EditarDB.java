@@ -4,6 +4,7 @@
  */
 package BaseDatos;
 
+import clases.Producto;
 import clases.Usuario;
 import clases.UsuarioSupervisor;
 import clases.UsuarioTienda;
@@ -61,6 +62,16 @@ public class EditarDB {
                         usuario.setNombreUsuario(r.getString("user_name"));
                         usuario.setContraseña(r.getString("_password"));
                         list.add(usuario);} 
+               break;
+               case "catalogue":
+                   while(r.next()){
+                        Producto producto = new Producto();
+                        producto.setCodigo( r.getInt(1) );
+                        producto.setNombre(r.getString(2));    
+                        producto.setCosto(r.getDouble(3));
+                        producto.setPrecio( r.getDouble(4));
+                        producto.setExistencia(r.getInt(5));
+                        list.add(producto);}
                break;
                default:
             }r.close();

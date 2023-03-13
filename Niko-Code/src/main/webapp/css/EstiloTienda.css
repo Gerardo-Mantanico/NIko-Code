@@ -103,7 +103,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
             font-size: var(--md);
             font-weight: bold;
             height: 40px;
-            width: 100px;
+            width: 115px;
             margin-left: 20px;
        }
        .container-list{
@@ -141,4 +141,4 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
                 font-size: var(--lg);
                 font-weight:  bold;
                 text-decoration: none;
-                }
+            }
