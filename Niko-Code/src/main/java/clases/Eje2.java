@@ -17,7 +17,7 @@ public class Eje2 {
     public static void main(String args[]){
          CargaDatosEntrada carga=new CargaDatosEntrada();
          GuardarDatosEntrada d= new GuardarDatosEntrada();
-          System.out.println(d.IdMax());
+         // System.out.println(d.IdMax());
              
          }
 }

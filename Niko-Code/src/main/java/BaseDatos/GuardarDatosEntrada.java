@@ -228,7 +228,7 @@ public class GuardarDatosEntrada {
             preparedStatement.executeUpdate();
             System.out.println(" Incidencia guardado");
         } catch (SQLException e) {
-            System.out.println("Error al crear lista productos enviados: " + e);
+            System.out.println("Error al crear incidenia" + e);
         }
         catch (ClassNotFoundException ex) {
                 Logger.getLogger(ServletCreate.class.getName()).log(Level.SEVERE, null, ex);
@@ -249,7 +249,7 @@ public class GuardarDatosEntrada {
             preparedStatement.executeUpdate();
             System.out.println(" productos de Incidencia guardado ");
         } catch (SQLException e) {
-            System.out.println("Error al crear lista productos enviados: " + e);
+            System.out.println("Error al crear lista de incidencia enviados: " + e);
         }
         catch (ClassNotFoundException ex) {
                 Logger.getLogger(ServletCreate.class.getName()).log(Level.SEVERE, null, ex);
@@ -299,9 +299,9 @@ public class GuardarDatosEntrada {
                 Logger.getLogger(ServletCreate.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public int IdMax(){
+    public int IdMax(String tipo){
         int id=0;
-        String query="SELECT MAX(id) AS id FROM pedido";
+        String query="SELECT MAX(id) AS id FROM "+tipo;
         PreparedStatement preparedStatement; 
            try {
                Statement stamente;

@@ -15,11 +15,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import resources.ConexionBase;
 import resources.Encriptar;
 
@@ -99,9 +101,10 @@ public class ServletLogin extends HttpServlet {
                                 PreparedStatement pa = con.conexion().prepareStatement(userTienda);
                                 ResultSet rr = pa.executeQuery();
                                 if(rr.next()){
-                                    request.setAttribute("fecha", "2023-02-04");
-                                    request.setAttribute("codigoUsuario", String.valueOf(r.getInt("_code")));
-                                    request.setAttribute("tienda", String.valueOf(rr.getInt("store")));
+                                    HttpSession session = request.getSession();
+                                    session.setAttribute("fecha", "2023-02-04");
+                                    session.setAttribute("codigoUsuario", String.valueOf(r.getInt("_code")));
+                                    session.setAttribute("tienda", String.valueOf(rr.getInt("store")));
                                     request.setAttribute("lista", this.lista("catalogue"));
                                     request.getRequestDispatcher("Ventana_Tienda/Tienda.jsp").forward(request, response);
                                  }

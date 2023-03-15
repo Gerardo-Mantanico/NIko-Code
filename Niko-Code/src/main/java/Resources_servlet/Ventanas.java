@@ -53,6 +53,29 @@ public class Ventanas extends HttpServlet {
                 request.setAttribute("lista", lista("supervisory"));
                 request.getRequestDispatcher("Venta_Administrativa/SupervisorTienda.jsp").forward(request, response);
             break;
+            case"RecibirEnvios":
+                String tienda = request.getParameter("valor");
+                System.out.println(tienda);
+                String query = "envios where tienda=" + tienda;
+                request.setAttribute("listEnvio", this.listas(query, "envios"));
+                request.getRequestDispatcher("Ventana_Tienda/RecibirEnvio.jsp").forward(request, response);
+            break;
+            case"incidencias":
+                String tiend = request.getParameter("valor");
+                String queryr = "envios where tienda=" + tiend;
+                request.setAttribute("listEnvio", this.listas(queryr, "envios"));
+                request.getRequestDispatcher("Ventana_Tienda/IncidenciaDevolucion.jsp").forward(request, response);
+                break;
+            case"inicio":
+                super.destroy();
+                response.sendRedirect("index.jsp");
+            break;
+            case"devolucion":
+                String tiendr = request.getParameter("valor");
+                String queryrr= "envios where tienda=" + tiendr;
+                request.setAttribute("listEnvio", this.listas(queryrr, "envios"));
+                request.getRequestDispatcher("Ventana_Tienda/Devoluciones.jsp").forward(request, response);
+                break;
             default:
                 throw new AssertionError();
         }
@@ -106,5 +129,15 @@ public class Ventanas extends HttpServlet {
         return list;
          
     }
+     
+       public ArrayList  listas(String query, String menu){
+            EditarDB db=new EditarDB();
+            ArrayList list = new ArrayList();
+            list=db.listas(query, menu);
+        return list;
+         
+    }
+         
+
 
 }

@@ -113,7 +113,7 @@ CREATE TABLE ENVIOS(
  tienda INT NOT NULL,
  codigo_usuario INT NOT NULL,
  fechaSalida DATE NOT NULL,
- fechaRecibido DATE NOT NULL,
+ fechaRecibido DATE,
  total DECIMAL(9,2) NOT NULL,
  estado VARCHAR(100) NOT NULL,
  PRIMARY KEY(id),

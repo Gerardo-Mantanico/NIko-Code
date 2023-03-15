@@ -21,13 +21,13 @@
         <div class="container-left">
             <div class="container-order">
                 <div class="container-header">
-                    <h1 class="title">Crear Incidencia</h1>
-                    <form action="ServletIncidencia" method="Post">
+                    <h1 class="title">Crear Devoluciones</h1>
+                    <form action="ServletDevolucion" method="POST">
                     <label for="text" class="label"> Id envio: </label>
                    <select name="idEnvio"  class="input-search" required>
                     <c:forEach items="${listEnvio}" var="envio">
                         <option value="<c:out value="${envio.id}" ></c:out>"><c:out value="${envio.id}" ></c:out></option>
-                    </c:forEach>
+                    </c:forEach> 
                     </select>
                     <label for="text" class="label"> Tienda: </label>
                     <input type="text" class="input-number" readonly  name="tienda" value="<%=tienda%>" >
@@ -40,7 +40,7 @@
                     <button class="input-button" name="button" value="buscar">Buscar</button>
                     </form>
                     <div class="container-products">
-                        <form action="ServletIncidencia" method="Post">
+                        <form action="ServletDevolucion" method="Post">
                         <label for="number" class="label">Motivo:</label>
                         <select name="estado"   class="input-search">
                             <c:forEach items="${estado}" var="estado">
@@ -62,7 +62,9 @@
                               <th>Codigo</th>
                               <th>Cantidad</th>
                               <th>Motivo</th>
-                            <form action="ServletIncidencia" method="POST">
+                              <th>CostoU</th>
+                              <th>Sub total</th>
+                            <form action="ServletDevolucion" method="POST">
                               <th>  <button class="input-button" name="button" value="Crear">Agregar</button></th>
                               </form>
                             </tr>
@@ -70,10 +72,11 @@
                             <tr>
                                <td><c:out value="${producto.codigo}"></c:out></td>
                                <td><input type="number"  value="<c:out value="${producto.existencia}"></c:out>" name="change" id="pennies" min="1" max="<c:out value="${producto.existencia}"></c:out>" step="1"></td>
-                               <td> <c:out value="${producto.estado}"></c:out></td>
+                              
+                               <td> <c:out value="${producto.costo}"></c:out></td>
+                               <td> <c:out value="${producto.precio}"></c:out></td>
                             </tr>
                             </c:forEach>
-                            
                           </table>
                     </div>
                 </div>

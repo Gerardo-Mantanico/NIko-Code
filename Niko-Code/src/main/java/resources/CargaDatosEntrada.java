@@ -187,12 +187,12 @@ public class CargaDatosEntrada {
         JSONArray listenvio =(JSONArray) pro.get("envios");
         for(Object envios: listenvio){
             JSONObject envio= (JSONObject) envios;
-            Envios envioss =new Envios();
-             envioss.setId(convertirLongInt(envio.get("id")));
-             envioss.setTienda(convertirLongInt(envio.get("tienda")));
-             envioss.setCodigoUsuario(this.convertirLongInt(envio.get("usuario")));
-             envioss.setFechaSalida(Date.valueOf((String) envio.get("fechaSalida")));
-             //envioss.setFechaRecibido(Date.valueOf((String) envio.get("fechaRecibido")));
+            Envios envioss = new Envios();
+            envioss.setId(convertirLongInt(envio.get("id")));
+            envioss.setTienda(convertirLongInt(envio.get("tienda")));
+            envioss.setCodigoUsuario(this.convertirLongInt(envio.get("usuario")));
+            envioss.setFechaSalida(Date.valueOf((String) envio.get("fechaSalida")));
+            //envioss.setFechaRecibido(Date.valueOf((String) envio.get("fechaRecibido")));
             
             JSONArray listEnvioProducto =(JSONArray) envio.get("productos");
             for( Object productos: listEnvioProducto ){
