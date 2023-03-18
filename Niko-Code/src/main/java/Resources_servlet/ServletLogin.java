@@ -109,8 +109,11 @@ public class ServletLogin extends HttpServlet {
                                     request.getRequestDispatcher("Ventana_Tienda/Tienda.jsp").forward(request, response);
                                  }
                             break;
-                            case "SUPERVISOR":
-                                 response.sendRedirect("Venta_Administrativa/Venta_Principal.jsp");
+                            case "BODEGA":
+                                    HttpSession session = request.getSession();
+                                    session.setAttribute("codigoUsuario", r.getInt("_code"));
+                                    session.setAttribute("valor", r.getInt("_code"));
+                                    request.getRequestDispatcher("Ventanas?accion=crearEncvio&valor="+r.getInt("_code")).forward(request, response);
                             break;
                             default:
  

@@ -26,7 +26,7 @@
                     <label for="text" class="label"> Id envio: </label>
                    <select name="idEnvio"  class="input-search" required>
                     <c:forEach items="${listEnvio}" var="envio">
-                        <option value="<c:out value="${envio.id}" ></c:out>"><c:out value="${envio.id}" ></c:out></option>
+                        <option value="<c:out value="${envio}" ></c:out>"><c:out value="${envio}" ></c:out></option>
                     </c:forEach> 
                     </select>
                     <label for="text" class="label"> Tienda: </label>
@@ -53,8 +53,13 @@
                                 <option value="<c:out value="${producto.codigo}" ></c:out>"><c:out value="${producto.codigo}" ></c:out></option>
                             </c:forEach>
                         </select>
+                        <label for="number"class="label" >Cantidad:</label>
+                        <input  class="input-number" type="number"  name="cantidad" id="pennies" min="1"   step="1" required>
                         <button class="input-button" name="button" value="Agregar">Agregar</button>
                         </form>
+                        <c:forEach items="${mensaje}" var="mensaje">
+                            <h4 class="title"><c:out value="${mensaje}"></c:out></h4>
+                        </c:forEach>
                     </div>
                     <div class="container-list">
                         <table class="default">
@@ -71,12 +76,23 @@
                             <c:forEach items="${productosEnvio}" var="producto">
                             <tr>
                                <td><c:out value="${producto.codigo}"></c:out></td>
-                               <td><input type="number"  value="<c:out value="${producto.existencia}"></c:out>" name="change" id="pennies" min="1" max="<c:out value="${producto.existencia}"></c:out>" step="1"></td>
-                              
-                               <td> <c:out value="${producto.costo}"></c:out></td>
-                               <td> <c:out value="${producto.precio}"></c:out></td>
+                               <td><c:out value="${producto.cantidad}"></c:out></td>
+                               <td> <c:out value="${producto.motivo}"></c:out></td>
+                               <td>Q  <c:out value="${producto.costo}"></c:out></td>
+                               <td>Q  <c:out value="${producto.costoTotal}"></c:out></td>
                             </tr>
                             </c:forEach>
+                            
+                             <tr>
+                                 <td></td>
+                                 <td></td>
+                                 <td></td>
+                                 <td></td>
+                                 <td></td>
+                                 <c:forEach items="${total}" var="total">
+                                     <td class="subtotal">Q <c:out value="${total}"></c:out> </td>
+                                 </c:forEach>
+                            </tr>
                           </table>
                     </div>
                 </div>

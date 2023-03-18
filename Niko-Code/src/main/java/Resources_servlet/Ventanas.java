@@ -4,7 +4,9 @@
  */
 package Resources_servlet;
 
+import BaseDatos.CrearEnvioDB;
 import BaseDatos.EditarDB;
+import clases.ListaId;
 import clases.Usuario;
 import clases.UsuarioSupervisor;
 import clases.UsuarioTienda;
@@ -16,6 +18,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import resources.Estado;
 
 /**
  *
@@ -23,16 +27,9 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "Ventanas", urlPatterns = {"/Ventanas"})
 public class Ventanas extends HttpServlet {
-
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+   String query;
+   String tienda;
+   EditarDB db=new EditarDB();
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
             String menu=request.getParameter("accion");
@@ -54,16 +51,15 @@ public class Ventanas extends HttpServlet {
                 request.getRequestDispatcher("Venta_Administrativa/SupervisorTienda.jsp").forward(request, response);
             break;
             case"RecibirEnvios":
-                String tienda = request.getParameter("valor");
-                System.out.println(tienda);
-                String query = "envios where tienda=" + tienda;
-                request.setAttribute("listEnvio", this.listas(query, "envios"));
+                tienda = request.getParameter("valor");
+                 query="envios where tienda="+tienda+" and estado='"+Estado.DESPACHADO.name()+"'";
+                request.setAttribute("listEnvio", listas(query, "envios"));
                 request.getRequestDispatcher("Ventana_Tienda/RecibirEnvio.jsp").forward(request, response);
             break;
             case"incidencias":
-                String tiend = request.getParameter("valor");
-                String queryr = "envios where tienda=" + tiend;
-                request.setAttribute("listEnvio", this.listas(queryr, "envios"));
+                 tienda = request.getParameter("valor");
+                 query="select e.id, e.estado, e.tienda from envios e left  join incidencias i on e.id=i.id where i.id is null";
+                request.setAttribute("listEnvio", this.idEnvio(query));
                 request.getRequestDispatcher("Ventana_Tienda/IncidenciaDevolucion.jsp").forward(request, response);
                 break;
             case"inicio":
@@ -71,13 +67,35 @@ public class Ventanas extends HttpServlet {
                 response.sendRedirect("index.jsp");
             break;
             case"devolucion":
-                String tiendr = request.getParameter("valor");
-                String queryrr= "envios where tienda=" + tiendr;
-                request.setAttribute("listEnvio", this.listas(queryrr, "envios"));
+                tienda = request.getParameter("valor");
+                query="select e.id, e.estado, e.tienda from envios e left  join devoluciones d on e.id=d.id where d.id is null";
+                request.setAttribute("listEnvio", this.idEnvio(query));
                 request.getRequestDispatcher("Ventana_Tienda/Devoluciones.jsp").forward(request, response);
+            break;
+            case"crearEncvio":
+                HttpSession session = request.getSession();
+                int c= (int) session.getAttribute("valor");
+                CrearEnvioDB envio =new CrearEnvioDB();
+                request.setAttribute("listTiendas", envio.listadoTiendas( String.valueOf(c)));
+                request.getRequestDispatcher("Vendana_Bodega/CrearEnvio.jsp").forward(request, response);
                 break;
+            case"ReporteBodega":
+                 request.getRequestDispatcher("Vendana_Bodega/Reporte.jsp").forward(request, response);
+                
+                
+                break;
+                
+                 case"s":
+                break;
+                
+                 case"a":
+                break;
+                 case"e":
+                break;
+                 case"f":
+                break;
+                
             default:
-                throw new AssertionError();
         }
     }
 
@@ -123,7 +141,6 @@ public class Ventanas extends HttpServlet {
   
 
      public ArrayList  lista(String query){
-            EditarDB db=new EditarDB();
             ArrayList list = new ArrayList();
             list=db.listUsuarioTienda(query);
         return list;
@@ -137,7 +154,21 @@ public class Ventanas extends HttpServlet {
         return list;
          
     }
-         
+     
+    public ArrayList idEnvio(String query) {
+        ArrayList<ListaId> li;
+        ArrayList<String> nueva = new ArrayList();
+        li = db.IdDevoluciones(query);
+        for (ListaId listaid : li) {
+            if (listaid.getTienda() == Integer.valueOf(tienda)) {
+                if (listaid.getEstad().equals(Estado.RECIBIDO.name())) {
+                    nueva.add(String.valueOf(listaid.getId()));
+                }
+            }
+        }
+        return nueva;
 
+    }
+   
 
 }

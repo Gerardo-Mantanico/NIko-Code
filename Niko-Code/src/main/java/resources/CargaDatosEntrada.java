@@ -11,6 +11,7 @@ import clases.Envios;
 import clases.Incidencia;
 import clases.Pedido;
 import clases.Producto;
+import clases.ProductoDevolucion;
 import clases.Tienda;
 import clases.Usuario;
 import clases.UsuarioSupervisor;
@@ -39,10 +40,10 @@ public class CargaDatosEntrada {
     boolean estado;
     
     public void leerJson(File file){
-        JSONParser jsonParser = new JSONParser();      
+        JSONParser jsonParser = new JSONParser();     
         try (FileReader reader = new FileReader(file)){
             //Read JSON file
-            Object obj = jsonParser.parse(reader);     
+            Object obj = jsonParser.parse(reader);
             JSONArray employeeList = (JSONArray) obj;
             System.out.println(employeeList);
             for(Object productos :employeeList ){
@@ -242,12 +243,13 @@ public class CargaDatosEntrada {
                  JSONArray listDevolucionesProducto =(JSONArray) devo.get("productos");
                  for( Object productos: listDevolucionesProducto ){
                     JSONObject producto= (JSONObject) productos;
-                    Producto productoss=new Producto();
+                    ProductoDevolucion productoss=new ProductoDevolucion();
                     productoss.setCodigo(this.convertirLongInt(producto.get("codigo")));
-                    productoss.setPrecio(this.convertirLongDouble(producto.get("costo")));
-                    productoss.setExistencia(this.convertirLongInt(producto.get("cantidad")));
-                    productoss.setCosto(this.convertirLongDouble(producto.get("costoTotal")));
-                    base.listaDevolucion(productoss, devoluciones.getId(), (String) producto.get("motivo"));
+                    productoss.setCosto(this.convertirLongDouble(producto.get("costo")));
+                    productoss.setCantidad(this.convertirLongInt(producto.get("cantidad")));
+                    productoss.setMotivo((String) producto.get("motivo"));
+                    productoss.setCostoTotal(this.convertirLongDouble(producto.get("costoTotal")));
+                    base.listaDevolucion(productoss, devoluciones.getId());
                  }
                  devoluciones.setTotal(this.convertirLongDouble(devo.get("total")));
                  devoluciones.setEstado((String) devo.get("estado"));

@@ -5,12 +5,14 @@
 package BaseDatos;
 
 import clases.Envios;
+import clases.ListaId;
 import clases.Producto;
 import clases.ProductoDevolucion;
 import clases.Usuario;
 import clases.UsuarioSupervisor;
 import clases.UsuarioTienda;
 import java.sql.Date;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -33,7 +35,7 @@ public class EditarDB {
         ArrayList<Object> list = new ArrayList();
         String query="SELECT* FROM "+tipo;
         try {
-            stamente = con.conexion().createStatement();
+           stamente  = con.conexion().createStatement();
             r = stamente.executeQuery(query);
             switch (tipo) {
                 case "user_store":
@@ -182,30 +184,82 @@ public class EditarDB {
                     }
                     break;               
                 case "ProductosDevoluciones":
-                     while (r.next()) {
+                    while (r.next()) {
                         ProductoDevolucion producto = new ProductoDevolucion();
                         producto.setCodigo(r.getInt(2));
                         producto.setCosto(r.getDouble(3));
                         producto.setCantidad(r.getInt(4));
                         producto.setCostoTotal(r.getDouble(5));
+                        objeto = producto;
+                    }
+                    break; 
+                case "envios":
+                    while(r.next()){
+                        Envios envioss = new Envios();
+                        envioss.setId(r.getInt(1));
+                        envioss.setTienda(r.getInt(2));
+                        envioss.setCodigoUsuario(r.getInt(3));
+                        envioss.setFechaSalida( r.getDate(4));
+                        envioss.setEstado(r.getString(7));
+                        //envioss.setFechaRecibido(Date.valueOf((String) envio.get("fechaRecibido")));
+                        objeto=envioss;
+                    }
+                    break;   
+                case"producto":
+                    while (r.next()) {
+                        Producto producto = new Producto();
+                        producto.setCodigo(r.getInt(1));
+                        producto.setNombre(r.getString(2));
+                        producto.setCosto(r.getDouble(3));
+                        producto.setPrecio(r.getDouble(4));
+                        producto.setExistencia(r.getInt(5));
+                        System.out.println(producto.getExistencia());
                         objeto=producto;
                     }
-                    
-                    
                 break;
                 default:
             }
-           
+            con.conexion().close();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(EditarDB.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(EditarDB.class.getName()).log(Level.SEVERE, null, ex);
         }
-             
-        
-        
         return objeto;
+    }
     
+    public void editar(String query){
+         try {
+            stamente.execute(query);
+            stamente = con.conexion().createStatement();
+            con.conexion().close();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(EditarDB.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(EditarDB.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+    }
+    public ArrayList IdDevoluciones(String query){
+        ArrayList<Object> list = new ArrayList();
+        try {
+            //String query="select e.id, e.estado, e.tienda from envios e left  join devoluciones d on e.id=d.id where d.id is null";
+            PreparedStatement pstmt =  con.conexion().prepareStatement(query);
+            r = pstmt.executeQuery();
+            while(r.next()){
+               ListaId listaId = new ListaId();
+               listaId.setId(r.getInt("id"));
+               listaId.setEstad(r.getString("estado"));
+               listaId.setTienda(r.getInt("tienda"));
+               System.out.println(listaId.getId());
+               list.add(listaId);
+            }
+            con.conexion().close();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(EditarDB.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(EditarDB.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        return list;
     }
      
 }

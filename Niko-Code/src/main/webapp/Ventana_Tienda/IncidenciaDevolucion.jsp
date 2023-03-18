@@ -26,7 +26,7 @@
                     <label for="text" class="label"> Id envio: </label>
                    <select name="idEnvio"  class="input-search" required>
                     <c:forEach items="${listEnvio}" var="envio">
-                        <option value="<c:out value="${envio.id}" ></c:out>"><c:out value="${envio.id}" ></c:out></option>
+                        <option value="<c:out value="${envio}" ></c:out>"><c:out value="${envio}" ></c:out></option>
                     </c:forEach>
                     </select>
                     <label for="text" class="label"> Tienda: </label>

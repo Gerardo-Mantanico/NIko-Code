@@ -2,14 +2,17 @@
 package Resources_servlet;
 
 import BaseDatos.EditarDB;
+import clases.Envios;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import resources.Estado;
 
 /**
  *
@@ -17,9 +20,11 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "EnvioLisProducto", urlPatterns = {"/EnvioLisProducto"})
 public class EnvioLisProducto extends HttpServlet {
-
+    Envios envio=new Envios();
     ArrayList listaproducto;
     EditarDB DB =new EditarDB();
+    String id;
+    String tienda;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -63,11 +68,27 @@ public class EnvioLisProducto extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            String id=request.getParameter("envio");
-            String tienda=request.getParameter("tienda");
-            request.setAttribute("productosEnvio", DB.listas( "envios_productos where id_pedido="+id, "productosEnvio"));
-            request.setAttribute("listEnvio", this.listas("envios where tienda=" + tienda, "envios"));
-            request.getRequestDispatcher("Ventana_Tienda/RecibirEnvio.jsp").forward(request, response);
+        String menu = request.getParameter("button");
+        switch (menu) {
+            case "ver":
+                id=request.getParameter("envio");
+                tienda=request.getParameter("tienda");
+                String query="envios where tienda="+tienda+" and estado='"+Estado.DESPACHADO.name()+"'";
+                request.setAttribute("productosEnvio", DB.listas( "envios_productos where id_pedido="+id, "productosEnvio"));
+                request.setAttribute("listEnvio", this.listas(query, "envios"));
+                request.getRequestDispatcher("Ventana_Tienda/RecibirEnvio.jsp").forward(request, response);
+            break;
+            case"Recibir":
+                // Obtener la fecha actual
+                LocalDate fechaActual = LocalDate.now();
+                DB.editar("UPDATE envios SET fechaRecibido= '"+fechaActual+"' WHERE id ="+id);
+                DB.editar("UPDATE envios SET estado = '"+Estado.RECIBIDO.name()+"' WHERE id ="+id);
+                String querys="envios where tienda="+tienda+" and estado='"+Estado.DESPACHADO.name()+"'";
+                request.setAttribute("listEnvio", this.listas(querys, "envios"));
+                request.getRequestDispatcher("Ventana_Tienda/RecibirEnvio.jsp").forward(request, response);
+            break;
+        }
+
             
        
     }

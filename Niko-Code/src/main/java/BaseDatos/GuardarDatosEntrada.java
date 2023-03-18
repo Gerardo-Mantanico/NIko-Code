@@ -10,6 +10,7 @@ import clases.Envios;
 import clases.Incidencia;
 import clases.Pedido;
 import clases.Producto;
+import clases.ProductoDevolucion;
 import clases.Tienda;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -149,7 +150,7 @@ public class GuardarDatosEntrada {
             preparedStatement.executeUpdate();
             System.out.println("pedido creado");
         } catch (SQLException e) {
-            System.out.println("Error al crear usuario: " + e);
+            System.out.println("Error al crear envio " + e);
         }
         catch (ClassNotFoundException ex) {
                 Logger.getLogger(ServletCreate.class.getName()).log(Level.SEVERE, null, ex);
@@ -245,7 +246,6 @@ public class GuardarDatosEntrada {
             preparedStatement.setInt(2, codigo);
             preparedStatement.setInt(3, cantida);
             preparedStatement.setString(4, motivo);
-
             preparedStatement.executeUpdate();
             System.out.println(" productos de Incidencia guardado ");
         } catch (SQLException e) {
@@ -267,7 +267,6 @@ public class GuardarDatosEntrada {
             preparedStatement.setDate(4, devolucion.getFecha());
             preparedStatement.setDouble(5, devolucion.getTotal());
             preparedStatement.setString(6, devolucion.getEstado());
-
             preparedStatement.executeUpdate();
             System.out.println(" devolucion guardado ");
         } catch (SQLException e) {
@@ -279,17 +278,17 @@ public class GuardarDatosEntrada {
     }
    
          //metodo lista de producto de devolucion
-    public void  listaDevolucion(Producto producto, int idPedido, String estado) {
+    public void  listaDevolucion(ProductoDevolucion producto, int idPedido) {
         String query = "INSERT INTO devoluciones_producto (id_pedido, codigo, costo, cantida, costoTotal, motivo) VALUES (?,?, ?,?,?,?)";
         try{
             PreparedStatement preparedStatement; 
             preparedStatement = con.conexion().prepareStatement(query);
             preparedStatement.setInt(1, idPedido);
             preparedStatement.setInt(2, producto.getCodigo());
-            preparedStatement.setDouble(3, producto.getPrecio());
-            preparedStatement.setInt(4, producto.getExistencia());
-            preparedStatement.setDouble(5, producto.getCosto());
-            preparedStatement.setString(6, estado);
+            preparedStatement.setDouble(3, producto.getCosto());
+            preparedStatement.setInt(4, producto.getCantidad());
+            preparedStatement.setDouble(5, producto.getCostoTotal());
+            preparedStatement.setString(6, producto.getMotivo());
             preparedStatement.executeUpdate();
             System.out.println("guardado");
         } catch (SQLException e) {
@@ -317,7 +316,5 @@ public class GuardarDatosEntrada {
             Logger.getLogger(GuardarDatosEntrada.class.getName()).log(Level.SEVERE, null, ex);
         }
            return id;
-
-
     }
 }

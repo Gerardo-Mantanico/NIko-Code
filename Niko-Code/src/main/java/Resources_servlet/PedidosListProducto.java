@@ -93,6 +93,9 @@ public class PedidosListProducto extends HttpServlet {
                 pedido.setCodigoUsuario( Integer.parseInt(request.getParameter("id")) );
                 pedido.setFecha(Date.valueOf(request.getParameter("fecha")));
                 pedido.setEstado(Estado.SOLICITADO.name());
+                if(tipoTienda(pedido.getTienda()).equals(Estado.supervisada.name())){
+                     pedido.setEstado(Estado.PENDIENTE.name());
+                }
                 Producto pro=new Producto();
                 String p=request.getParameter("producto");
                 String c= request.getParameter("cantidad");
@@ -131,8 +134,6 @@ public class PedidosListProducto extends HttpServlet {
                 request.getRequestDispatcher("Ventana_Tienda/Tienda.jsp").forward(request, response);
                 
             break;
-            
-            
             default:
                 
         }
@@ -194,5 +195,25 @@ public class PedidosListProducto extends HttpServlet {
         // Crear un nuevo ArrayList a partir de los valores del Map
         List<Producto> productosSumados = new ArrayList<>(mapProductos.values());
         return (ArrayList) productosSumados;
+    }
+   
+    public String tipoTienda(int tienda) {
+        String query = "select  store._type from store where _code="+tienda;
+        String tipo = null;
+        try {
+            stamente = con.conexion().createStatement();
+            r = stamente.executeQuery(query);
+            if(r.next()){
+              tipo=r.getString(1);
+            }
+                
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(PedidosListProducto.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(PedidosListProducto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      
+        return tipo;
+
     }
 }

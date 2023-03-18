@@ -31,19 +31,21 @@
                                         </option>                           
                                 </c:forEach>
                             </select>
-                        <button class="input-button" value="agregar" name="button" >Ver</button>
+                        <button class="input-button" value="ver" name="button" >Ver</button>
                         </form>
                     </div>
                     <div class="container-list">
                         <table class="default">
                             <tr>
-                              <th>Codigo</th>
-                              <th>costoU</th>
-                              <th>cantidad</th>
-                              <th>Costo total</th>
-                              <th><button class="input-button" value="pedido" name="button" >Recibir</button></th> 
-                            </tr>
-                            <c:forEach items="${productosEnvio}" var="pro">
+                                <th>Codigo</th>
+                                <th>costoU</th>
+                                <th>cantidad</th>
+                                <th>Costo total</th>
+                            <form action="EnvioLisProducto" method="POST">
+                                <th><button class="input-button" value="Recibir" name="button" >Recibir</button></th> 
+                            </form>
+                        </tr>
+                        <c:forEach items="${productosEnvio}" var="pro">
                             <tr>
                                 <td><c:out value="${pro.codigo}" ></c:out></td>
                                 <td><c:out value="${pro.costo}"> </c:out></td>

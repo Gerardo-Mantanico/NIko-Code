@@ -93,7 +93,6 @@ public class ServletIncidencia extends HttpServlet {
                 String query="envios_productos where id_pedido="+IdEnvio;
                 list=base.listas(query, "productosEnvio");
                 request.setAttribute("listaProductos", list);
-                request.setAttribute("listEnvio", this.listas("envios where tienda="+tienda, "envios"));
                 request.setAttribute("estado", this.estados());
                 request.setAttribute("fecha", fecha);
                 request.getRequestDispatcher("Ventana_Tienda/IncidenciaDevolucion.jsp").forward(request, response);
@@ -124,17 +123,13 @@ public class ServletIncidencia extends HttpServlet {
             default:
             case "Crear":
                 if(lista.size()!=0){
-                    incidencia.setId(0);
                     DB.Incidencias(incidencia);
                 }
                 for(ProductoIncidencia producto: lista){
-                    DB.listIncidencias(DB.IdMax("incidencias"), producto.getCodigo(), producto.getExistencia(), producto.getEstado());
+                    DB.listIncidencias(incidencia.getId(), producto.getCodigo(), producto.getExistencia(), producto.getEstado());
                 }
                 lista.clear();
-                request.setAttribute("listEnvio", this.listas("envios where tienda="+incidencia.getTienda(), "envios"));
-                request.getRequestDispatcher("Ventana_Tienda/IncidenciaDevolucion.jsp").forward(request, response);
-                
-                
+                request.getRequestDispatcher("Ventanas?accion=incidencias&valor="+incidencia.getTienda()).forward(request, response);
             break;
         }
       

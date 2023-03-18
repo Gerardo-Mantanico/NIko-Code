@@ -7,6 +7,7 @@ package Resources_servlet;
 import BaseDatos.EditarDB;
 import BaseDatos.GuardarDatosEntrada;
 import clases.Incidencia;
+import clases.ListaId;
 import clases.Producto;
 import clases.ProductoDevolucion;
 import clases.ProductoIncidencia;
@@ -30,11 +31,11 @@ import resources.EstadoVista;
 @WebServlet(name = "ServletDevolucion", urlPatterns = {"/ServletDevolucion"})
 public class ServletDevolucion extends HttpServlet {
     ArrayList<Producto> list;
-    ArrayList<Producto> lista = new ArrayList<Producto>();
+    ArrayList<ProductoDevolucion> lista = new ArrayList<ProductoDevolucion>();
     EditarDB base =new EditarDB();
     GuardarDatosEntrada DB= new GuardarDatosEntrada();
     Incidencia devolucion= new Incidencia();
-    ProductoDevolucion proDevolucion =new ProductoDevolucion();
+ 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -52,29 +53,11 @@ public class ServletDevolucion extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-    /**
-     * Handles the HTTP <code>GET</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-           
+            throws ServletException, IOException {           
     }
 
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -82,6 +65,7 @@ public class ServletDevolucion extends HttpServlet {
         switch (menu) {
             case  "buscar":
                lista.clear();
+               devolucion.setTotal(0);
                 String fecha= request.getParameter("fecha");
                 String IdEnvio=request.getParameter("idEnvio");
                 String tienda=request.getParameter("tienda");
@@ -93,48 +77,63 @@ public class ServletDevolucion extends HttpServlet {
                 String query="envios_productos where id_pedido="+IdEnvio;
                 list=base.listas(query, "productosEnvio");
                 request.setAttribute("listaProductos", list);
-                request.setAttribute("listEnvio", this.listas("envios where tienda="+tienda, "envios"));
+               //request.setAttribute("listEnvio", this.listas("envios where tienda="+tienda, "envios"));
                 request.setAttribute("estado", this.estados());
                 request.setAttribute("fecha", fecha);
                 request.getRequestDispatcher("Ventana_Tienda/Devoluciones.jsp").forward(request, response);
             break;
             case "Agregar":
-                
+                String cantidad= request.getParameter("cantidad");
                 String codigoProducto= request.getParameter("productoCodigo");
                 String estado=request.getParameter("estado");
                 String q="envios_productos where codigo="+codigoProducto+" and id_pedido="+devolucion.getId();
-               for (int i = 0; i < list.size(); i++) {
+                for (int i = 0; i < list.size(); i++) {
                     if (list.get(i).getCodigo() == Integer.valueOf(codigoProducto)) {
-                        list.remove(i);
-                    }
+                        list.remove(i);}
                 }
-                Producto pro= (Producto)base.ObtenerObjetos(q, "productosEnvio");
+                ProductoDevolucion proDevolucion = (ProductoDevolucion) base.ObtenerObjetos(q, "ProductosDevoluciones");
                 proDevolucion.setMotivo(estado);
-                lista.add(pro);
+                if(proDevolucion.getCantidad()>Integer.valueOf(cantidad)){
+                    proDevolucion.setCantidad(Integer.valueOf(cantidad));
+                }
+                else if(proDevolucion.getCantidad()<Integer.valueOf(cantidad)){
+                   request.setAttribute("mensaje", "La maxima cantidad que se puede agregar es "+proDevolucion.getCantidad());
+                }
+                proDevolucion.setCostoTotal(proDevolucion.getCantidad()*proDevolucion.getCosto());
+                lista.add(proDevolucion);
+                devolucion.setTotal(devolucion.getTotal()+proDevolucion.getCostoTotal());
                 request.setAttribute("listaProductos", list);
                 request.setAttribute("fecha",  devolucion.getFecha().toString());
                 request.setAttribute("estado", this.estados());
                 request.setAttribute("productosEnvio",lista);
+                request.setAttribute("total", (String.valueOf(devolucion.getTotal())));
                 request.getRequestDispatcher("Ventana_Tienda/Devoluciones.jsp").forward(request, response);
             break;
             default:
             case "Crear":
+                
                 if(lista.size()!=0){
-                    devolucion.setId(0);
-                    DB.Incidencias(devolucion);
-                }
-                for(Producto producto: lista){
-                    DB.listaDevolucion(producto, DB.IdMax("devoluciones"), proDevolucion.getMotivo());
+                    DB.crearDevoluciones(devolucion);}
+                for(ProductoDevolucion producto: lista){
+                    DB.listaDevolucion(producto, devolucion.getId());
                 }
                 lista.clear();
-                request.setAttribute("listEnvio", this.listas("envios where tienda="+devolucion.getTienda(), "envios"));
-                request.getRequestDispatcher("Ventana_Tienda/Devoluciones.jsp").forward(request, response);
-                
-                
+                tienda = request.getParameter("valor");
+                query="envios where tienda="+tienda+" and estado='"+Estado.RECIBIDO+"'";
+                ArrayList<ListaId> li;
+                ArrayList<String> nueva = new ArrayList();
+                li=base.IdDevoluciones("select e.id, e.estado, e.tienda from envios e left  join devoluciones d on e.id=d.id where d.id is null");
+                for(ListaId listaid: li){
+                      if(listaid.getTienda()==Integer.valueOf(tienda)){
+                        if(listaid.getEstad().equals(Estado.RECIBIDO.name())){
+                            nueva.add( String.valueOf(listaid.getId()));
+                       }
+                   }
+                }
+                request.setAttribute("listEnvio", nueva);
+                request.getRequestDispatcher("Ventana_Tienda/Devoluciones.jsp").forward(request, response); 
             break;
         }
-      
-       
     }
 
     /**
