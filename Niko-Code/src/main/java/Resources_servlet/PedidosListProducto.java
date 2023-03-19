@@ -8,6 +8,7 @@ import BaseDatos.EditarDB;
 import BaseDatos.GuardarDatosEntrada;
 import clases.Pedido;
 import clases.Producto;
+import clases.ProductoEnvio;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
@@ -38,7 +39,7 @@ public class PedidosListProducto extends HttpServlet {
     ConexionBase con=new ConexionBase();
     Statement stamente;
     ResultSet r;
-    ArrayList list= new ArrayList();
+    ArrayList<Producto> list= new ArrayList();
     Pedido pedido=new Pedido();
     float total=0;
     GuardarDatosEntrada base=new GuardarDatosEntrada();
@@ -118,10 +119,14 @@ public class PedidosListProducto extends HttpServlet {
             case "pedido":
                 pedido.setTotal((double) total );
                 base.pedido(pedido);
-                for(Object objeto: list){
-                    Producto producto=new Producto();
-                    producto= (Producto)objeto;
-                    base.listapedido(producto, base.IdMax("pedido"));
+                for(Producto producto: list){
+                     ProductoEnvio proEnvio=new ProductoEnvio();
+                     proEnvio.setIdEnvio(base.IdMax("pedido"));
+                     proEnvio.setCodigo(producto.getCodigo());
+                     proEnvio.setCantidad(producto.getExistencia());
+                     proEnvio.setCosto(producto.getCosto());
+                     proEnvio.setCostoTotal(producto.getPrecio()); 
+                     base.listapedido(proEnvio);
                 }
                 total=0;
                 list.clear();

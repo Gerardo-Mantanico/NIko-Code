@@ -75,8 +75,7 @@
                                 <td> <c:out value="${usuario.nombreUsuario}" ></c:out></td>     
                                 <form method="POST" action="EditarDatos" class="form"> 
                                 <th scope="row"> <button  name="editar" value="<c:out value="${usuario.codigo}" ></c:out>"  class="button-secundary">Edit </button></th>
-                                <th>   <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked>  </th>
-                                <th scope="row"> <button  value="<c:out value="${usuario.codigo}" ></c:out>"  class="button-secundary"><c:out value="${usuario.codigo}" ></c:out></button></th>
+                                <th scope="row"> <button  value="<c:out value="DESACTIVA" ></c:out>"  class="button-secundary">DESACTIVAR</button></th>
                                 </form>
                              </c:forEach>
                                 </tr>

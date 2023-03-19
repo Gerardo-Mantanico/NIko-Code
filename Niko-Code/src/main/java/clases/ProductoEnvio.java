@@ -8,13 +8,20 @@ package clases;
  *
  * @author HP
  */
-public class ProductoDevolucion {
-    private int idDevolucion;
-    private  int codigo;
+public class ProductoEnvio {
+    private int idEnvio;
+    private int codigo;
     private double costo;
     private int cantidad;
     private double costoTotal;
-    private String motivo;
+
+    public int getIdEnvio() {
+        return idEnvio;
+    }
+
+    public void setIdEnvio(int idEnvio) {
+        this.idEnvio = idEnvio;
+    }
 
     public int getCodigo() {
         return codigo;
@@ -47,25 +54,5 @@ public class ProductoDevolucion {
     public void setCostoTotal(double costoTotal) {
         this.costoTotal = costoTotal;
     }
-
-    public String getMotivo() {
-        return motivo;
-    }
-
-    public void setMotivo(String motivo) {
-        this.motivo = motivo;
-    }
-
-    public int getIdDevolucion() {
-        return idDevolucion;
-    }
-
-    public void setIdDevolucion(int idDevolucion) {
-        this.idDevolucion = idDevolucion;
-    }
     
-    
-    
-            
-          
 }

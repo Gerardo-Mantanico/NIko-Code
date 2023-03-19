@@ -9,6 +9,7 @@ import BaseDatos.EditarDB;
 import BaseDatos.GuardarDatosEntrada;
 import clases.Envios;
 import clases.Producto;
+import clases.ProductoEnvio;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
@@ -180,7 +181,14 @@ public class CrearEnvios extends HttpServlet {
                      }
                     DB.Crearenvios(crearEnvio);
                     for(Producto produ: lista){
-                         DB.listaenvio(produ, DB.IdMax("envios"));
+                         ProductoEnvio envioProducto=new ProductoEnvio();
+                         envioProducto.setIdEnvio(DB.IdMax("envios"));
+                         envioProducto.setCodigo(produ.getCodigo());
+                         envioProducto.setCosto(produ.getCosto());
+                         envioProducto.setCantidad(produ.getExistencia());
+                         envioProducto.setCostoTotal(produ.getPrecio());
+                                 
+                         DB.listaenvio(envioProducto);
                     }
                     String query=" UPDATE pedido SET estado='"+Estado.ENVIADO.name()+"' WHERE id ="+idPedido;
                      db.editar(query);

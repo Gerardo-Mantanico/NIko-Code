@@ -10,7 +10,6 @@ import clases.Incidencia;
 import clases.ListaId;
 import clases.Producto;
 import clases.ProductoDevolucion;
-import clases.ProductoIncidencia;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
@@ -35,7 +34,7 @@ public class ServletDevolucion extends HttpServlet {
     EditarDB base =new EditarDB();
     GuardarDatosEntrada DB= new GuardarDatosEntrada();
     Incidencia devolucion= new Incidencia();
- 
+    String tienda;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -68,7 +67,7 @@ public class ServletDevolucion extends HttpServlet {
                devolucion.setTotal(0);
                 String fecha= request.getParameter("fecha");
                 String IdEnvio=request.getParameter("idEnvio");
-                String tienda=request.getParameter("tienda");
+                tienda=request.getParameter("tienda");
                 devolucion.setId(Integer.valueOf(IdEnvio));
                 devolucion.setTienda(Integer.valueOf(tienda));
                 devolucion.setFecha(   Date.valueOf(fecha));
@@ -100,6 +99,7 @@ public class ServletDevolucion extends HttpServlet {
                    request.setAttribute("mensaje", "La maxima cantidad que se puede agregar es "+proDevolucion.getCantidad());
                 }
                 proDevolucion.setCostoTotal(proDevolucion.getCantidad()*proDevolucion.getCosto());
+                proDevolucion.setIdDevolucion(devolucion.getId());
                 lista.add(proDevolucion);
                 devolucion.setTotal(devolucion.getTotal()+proDevolucion.getCostoTotal());
                 request.setAttribute("listaProductos", list);
@@ -111,28 +111,29 @@ public class ServletDevolucion extends HttpServlet {
             break;
             default:
             case "Crear":
-                
-                if(lista.size()!=0){
-                    DB.crearDevoluciones(devolucion);}
-                for(ProductoDevolucion producto: lista){
-                    DB.listaDevolucion(producto, devolucion.getId());
+           
+                if (lista.size() != 0) {
+                    DB.crearDevoluciones(devolucion);
+                }
+                for (ProductoDevolucion producto : lista) {
+                    DB.listaDevolucion(producto);
                 }
                 lista.clear();
-                tienda = request.getParameter("valor");
-                query="envios where tienda="+tienda+" and estado='"+Estado.RECIBIDO+"'";
+                query = "envios where tienda=" + tienda + " and estado='" + Estado.RECIBIDO + "'";
                 ArrayList<ListaId> li;
                 ArrayList<String> nueva = new ArrayList();
-                li=base.IdDevoluciones("select e.id, e.estado, e.tienda from envios e left  join devoluciones d on e.id=d.id where d.id is null");
-                for(ListaId listaid: li){
-                      if(listaid.getTienda()==Integer.valueOf(tienda)){
-                        if(listaid.getEstad().equals(Estado.RECIBIDO.name())){
-                            nueva.add( String.valueOf(listaid.getId()));
-                       }
-                   }
+                li = base.IdDevoluciones("select e.id, e.estado, e.tienda from envios e left  join devoluciones d on e.id=d.id where d.id is null");
+                System.out.println(tienda + "porque es nulo esata miarda");
+                for (ListaId listaid : li) {
+                    if (listaid.getTienda() == Integer.valueOf(tienda)) {
+                        if (listaid.getEstad().equals(Estado.RECIBIDO.name())) {
+                            nueva.add(String.valueOf(listaid.getId()));
+                        }
+                    }
                 }
                 request.setAttribute("listEnvio", nueva);
-                request.getRequestDispatcher("Ventana_Tienda/Devoluciones.jsp").forward(request, response); 
-            break;
+                request.getRequestDispatcher("Ventana_Tienda/Devoluciones.jsp").forward(request, response);
+                break;
         }
     }
 

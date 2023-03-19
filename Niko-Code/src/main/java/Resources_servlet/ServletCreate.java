@@ -71,8 +71,20 @@ public class ServletCreate extends HttpServlet {
                 filePart.write(path+"/"+nombreArch);
                 File archivo= new File(path+"/"+nombreArch);
                 CargaDatosEntrada carga=new CargaDatosEntrada();
-                carga.leerJson(archivo);
-                carga.leerJson(archivo);
+                try{
+                    carga.leerJson(archivo);
+                    carga.cargarDatado();
+                    if(carga.Errores().size()!=0){
+                        request.setAttribute("Error",carga.Errores());
+                        request.getRequestDispatcher("Error.jsp").forward(request, response); 
+                    }
+                   
+                
+                }catch (Exception ex) {
+                    request.setAttribute("Error",carga.Errores());
+                    request.getRequestDispatcher("Error.jsp").forward(request, response); 
+                }
+                
                 request.setAttribute("lista", lista("user_admin"));
                 request.getRequestDispatcher("Venta_Administrativa/Venta_Principal.jsp").forward(request, response); 
                 
@@ -85,7 +97,9 @@ public class ServletCreate extends HttpServlet {
                 estado= Db.verificacionUsuario(usuario.getNombreUsuario(),usuario.getContraseña()  ,Estado.ADMINISTRADOR.name());
                if(estado==false){
                 code=Db.buscarCodigo(usuario.getNombreUsuario());
-                Db.crearAdmin(usuario ,code);
+                usuario.setCodigo(code);
+                Db.crearAdmin(usuario);
+               
                 request.setAttribute("msj","Usuario administador creado");
                 request.setAttribute("lista", lista("user_admin"));
                 request.getRequestDispatcher("Venta_Administrativa/Venta_Principal.jsp").forward(request, response); 

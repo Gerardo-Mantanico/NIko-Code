@@ -63,14 +63,14 @@
                               <th>Cantidad</th>
                               <th>Motivo</th>
                             <form action="ServletIncidencia" method="POST">
-                              <th>  <button class="input-button" name="button" value="Crear">Agregar</button></th>
+                              <th>  <button class="input-button" name="button" value="Crear">crear</button></th>
                               </form>
                             </tr>
                             <c:forEach items="${productosEnvio}" var="producto">
                             <tr>
                                <td><c:out value="${producto.codigo}"></c:out></td>
-                               <td><input type="number"  value="<c:out value="${producto.existencia}"></c:out>" name="change" id="pennies" min="1" max="<c:out value="${producto.existencia}"></c:out>" step="1"></td>
-                               <td> <c:out value="${producto.estado}"></c:out></td>
+                               <td><input type="number"  value="<c:out value="${producto.cantidad}"></c:out>" name="change" id="pennies" min="1" max="<c:out value="${producto.cantidad}"></c:out>" step="1"></td>
+                               <td> <c:out value="${producto.motivo}"></c:out></td>
                             </tr>
                             </c:forEach>
                             

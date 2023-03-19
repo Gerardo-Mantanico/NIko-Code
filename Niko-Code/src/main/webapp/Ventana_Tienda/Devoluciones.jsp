@@ -70,7 +70,7 @@
                               <th>CostoU</th>
                               <th>Sub total</th>
                             <form action="ServletDevolucion" method="POST">
-                              <th>  <button class="input-button" name="button" value="Crear">Agregar</button></th>
+                              <th>  <button class="input-button" name="button" value="Crear">Crear</button></th>
                               </form>
                             </tr>
                             <c:forEach items="${productosEnvio}" var="producto">

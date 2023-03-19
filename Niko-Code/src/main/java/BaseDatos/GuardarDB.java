@@ -6,6 +6,7 @@ package BaseDatos;
 
 import Resources_servlet.ServletCreate;
 import Resources_servlet.ServletLogin;
+import clases.TiendasBodega;
 import clases.Usuario;
 import clases.UsuarioSupervisor;
 import clases.UsuarioTienda;
@@ -50,12 +51,12 @@ public class GuardarDB {
         return estado;
      }
     //metodo para crear usuario  admin
-    public void crearAdmin(Usuario usuario ,int codigo) {
+    public void crearAdmin(Usuario usuario) {
         String query = "INSERT INTO user_admin (_code, _name, user_name, _password) VALUES (?,?, ?, ?)";
         try{
             PreparedStatement preparedStatement; 
             preparedStatement = con.conexion().prepareStatement(query);
-            preparedStatement.setInt(1, codigo);
+            preparedStatement.setInt(1, usuario.getCodigo());
             preparedStatement.setString(2,usuario.getNombre());
             preparedStatement.setString(3,usuario.getNombreUsuario());
             preparedStatement.setString(4,usuario.getContraseña());
@@ -115,9 +116,9 @@ public class GuardarDB {
             preparedStatement.setString(5,   usuario.getContraseña());
             preparedStatement.setString(6,   usuario.getEmail());
             preparedStatement.executeUpdate();
-            System.out.println("Usuario Administrador registrado");
+            System.out.println("Usuario tienda registrado");
         } catch (SQLException e) {
-            System.out.println("Error al crear usuario: " + e);
+            System.out.println("Error al crear usuario tienda: " + e);
         }
         catch (ClassNotFoundException ex) {
                 Logger.getLogger(ServletCreate.class.getName()).log(Level.SEVERE, null, ex);
@@ -137,7 +138,7 @@ public class GuardarDB {
             preparedStatement.executeUpdate();
             System.out.println("Usuario Administrador registrado");
         } catch (SQLException e) {
-            System.out.println("Error al crear usuario: " + e);
+            System.out.println("Error al crear usuario supervisor------: " + e);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ServletCreate.class.getName()).log(Level.SEVERE, null, ex);
         }  
@@ -157,24 +158,24 @@ public class GuardarDB {
             preparedStatement.executeUpdate();
             System.out.println("Usuario Administrador registrado");
         } catch (SQLException e) {
-            System.out.println("Error al crear usuario: " + e);
+            System.out.println("Error al crear usuario de bodega----: " + e);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ServletCreate.class.getName()).log(Level.SEVERE, null, ex);
         }  
     }   
      
     //metodo de lista de tiendas de usuario de bodega
-    public void listaTiendaBodega( int codigoUsuario, int tienda) {
+    public void listaTiendaBodega( TiendasBodega tienda) {
         String query = "INSERT INTO listatiendabodega (_code, tienda) VALUES (?, ?)";
         try{
             PreparedStatement preparedStatement; 
             preparedStatement = con.conexion().prepareStatement(query);
-            preparedStatement.setInt(1, codigoUsuario);
-            preparedStatement.setInt( 2,tienda);
+            preparedStatement.setInt(1, tienda.getUsuarioBodega());
+            preparedStatement.setInt( 2,tienda.getTienda());
             preparedStatement.executeUpdate();
             System.out.println("usario de bodegas con tiendas guardado");
         } catch (SQLException e) {
-            System.out.println("Error al crear usuario: " + e);
+            System.out.println("Error lista bodega " + e);
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ServletCreate.class.getName()).log(Level.SEVERE, null, ex);
         }  

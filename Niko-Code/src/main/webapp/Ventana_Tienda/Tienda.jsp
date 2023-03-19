@@ -58,7 +58,7 @@
                               <th>cantidad</th>
                               <th>costo total</th>
                             <form method="POST" action="PedidosListProducto" class="form">
-                              <th><button class="input-button" value="pedido" name="button" >Crear pedido</button></th> 
+                              <th><button class="input-button" value="pedido" name="button" >Pedido</button></th> 
                             </form>
                             </tr>
                             <c:forEach items="${produ}" var="product">

@@ -8,7 +8,7 @@ import BaseDatos.EditarDB;
 import BaseDatos.GuardarDatosEntrada;
 import clases.Incidencia;
 import clases.Producto;
-import clases.ProductoIncidencia;
+import clases.ProductoIncidencias;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
@@ -29,7 +29,7 @@ import resources.EstadoVista;
 @WebServlet(name = "ServletIncidencia", urlPatterns = {"/ServletIncidencia"})
 public class ServletIncidencia extends HttpServlet {
     ArrayList<Producto> list;
-    ArrayList<ProductoIncidencia> lista = new ArrayList<ProductoIncidencia>();
+    ArrayList<ProductoIncidencias> lista = new ArrayList<>();
     EditarDB base =new EditarDB();
     GuardarDatosEntrada DB= new GuardarDatosEntrada();
     Incidencia incidencia= new Incidencia();
@@ -108,10 +108,11 @@ public class ServletIncidencia extends HttpServlet {
                     }
                 }
                 Producto pro= (Producto)base.ObtenerObjetos(q, "productosEnvio");
-                ProductoIncidencia proIncidencia= new ProductoIncidencia();
+                ProductoIncidencias proIncidencia= new ProductoIncidencias();
+                proIncidencia.setCodigoIncidencia(incidencia.getId());
                 proIncidencia.setCodigo(pro.getCodigo());
-                proIncidencia.setExistencia(pro.getExistencia());
-                proIncidencia.setEstado(estado);
+                proIncidencia.setCantidad(pro.getExistencia());
+                proIncidencia.setMotivo(estado);
                 lista.add(proIncidencia);
                 request.setAttribute("listaProductos", list);
                 request.setAttribute("fecha",  incidencia.getFecha().toString());
@@ -125,8 +126,8 @@ public class ServletIncidencia extends HttpServlet {
                 if(lista.size()!=0){
                     DB.Incidencias(incidencia);
                 }
-                for(ProductoIncidencia producto: lista){
-                    DB.listIncidencias(incidencia.getId(), producto.getCodigo(), producto.getExistencia(), producto.getEstado());
+                for(ProductoIncidencias producto: lista){
+                    DB.listIncidencias(producto);
                 }
                 lista.clear();
                 request.getRequestDispatcher("Ventanas?accion=incidencias&valor="+incidencia.getTienda()).forward(request, response);

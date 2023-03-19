@@ -11,11 +11,15 @@ import clases.Incidencia;
 import clases.Pedido;
 import clases.Producto;
 import clases.ProductoDevolucion;
+import clases.ProductoEnvio;
+import clases.ProductoIncidencias;
+import clases.ProductoTienda;
 import clases.Tienda;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import resources.ConexionBase;
@@ -27,7 +31,8 @@ import resources.Estado;
  */
 public class GuardarDatosEntrada {
        private  ConexionBase con= new ConexionBase();
-       private PreparedStatement preparedStatement; 
+       private PreparedStatement preparedStatement;
+       ArrayList<String> listaErrores= new ArrayList();
     
        //metodo para verificar usuarios
      public boolean  verificacionUsuario(int codigo,String usuario, String contraseña,String tipo){
@@ -66,13 +71,14 @@ public class GuardarDatosEntrada {
             System.out.println("Usuario creado");
         } catch (SQLException e) {
             System.out.println("Error al crear usuario: " + e);
+            // listaErrores.add("No se pudo guardar el usuario");
         }
         catch (ClassNotFoundException ex) {
                 Logger.getLogger(ServletCreate.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
      //metodo para crear prodcuto 
-     public void crearProductos(Producto prodcuto){
+     public void crearProductos(Producto prodcuto) {
          String query = "INSERT INTO CATALOGUE (_code, _name, cost,price,existence) VALUES (?,?, ?,?,?)";
         try{
             PreparedStatement preparedStatement; 
@@ -85,7 +91,7 @@ public class GuardarDatosEntrada {
             preparedStatement.executeUpdate();
             System.out.println("producto creado");
         } catch (SQLException e) {
-            System.out.println("Error al crear usuario: " + e);
+            listaErrores.add("No se pudo guardar  el producto "+prodcuto.getNombre());
         }
         catch (ClassNotFoundException ex) {
                 Logger.getLogger(ServletCreate.class.getName()).log(Level.SEVERE, null, ex);
@@ -108,26 +114,28 @@ public class GuardarDatosEntrada {
             System.out.println("pedido creado");
         } catch (SQLException e) {
             System.out.println("Error al crear usuario: " + e);
+            listaErrores.add("No se pudo guardar el pedido "+pedido.getId()+" puede que no exista la tienda o el usuario");
         }
         catch (ClassNotFoundException ex) {
                 Logger.getLogger(ServletCreate.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     //metodo lista de producto de pedidos 
-     public void  listapedido(Producto producto, int idPedido) {
+     public void  listapedido(ProductoEnvio producto) {
        String query = "INSERT INTO pedidos_productos (id_pedido, codigo, costoU, cantidad, costoTotal) VALUES (?,?, ?,?,?)";
         try{
             PreparedStatement preparedStatement; 
             preparedStatement = con.conexion().prepareStatement(query);
-            preparedStatement.setInt(1, idPedido);
+            preparedStatement.setInt(1, producto.getIdEnvio());
             preparedStatement.setInt(2, producto.getCodigo());
-            preparedStatement.setDouble(3, producto.getPrecio());
-            preparedStatement.setInt(4, producto.getExistencia());
-            preparedStatement.setDouble(5, producto.getCosto());
+            preparedStatement.setDouble(3, producto.getCosto());
+            preparedStatement.setInt(4, producto.getCantidad());
+            preparedStatement.setDouble(5, producto.getCostoTotal());
             preparedStatement.executeUpdate();
             System.out.println("guardado");
         } catch (SQLException e) {
             System.out.println("Error al crear usuario: " + e);
+            listaErrores.add("No se pudo guardar los productos del pedido "+producto.getIdEnvio()+"  puede que no exista");
         }
         catch (ClassNotFoundException ex) {
                 Logger.getLogger(ServletCreate.class.getName()).log(Level.SEVERE, null, ex);
@@ -151,6 +159,7 @@ public class GuardarDatosEntrada {
             System.out.println("pedido creado");
         } catch (SQLException e) {
             System.out.println("Error al crear envio " + e);
+            listaErrores.add("No se pudo guardar el envio "+envios.getId()+ " puede que no exista la tienda ");
         }
         catch (ClassNotFoundException ex) {
                 Logger.getLogger(ServletCreate.class.getName()).log(Level.SEVERE, null, ex);
@@ -169,24 +178,26 @@ public class GuardarDatosEntrada {
             System.out.println("Tienda creada");
         } catch (SQLException e) {
             System.out.println("Error al crear usuario: " + e);
+            listaErrores.add("No se pudo guardar la tienda "+tienda.getCodigo() +" porque ya existe");
         }
         catch (ClassNotFoundException ex) {
                 Logger.getLogger(ServletCreate.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     //metodo de lista de productos de tienda
-    public void  ProductoTiendas(int codigoTienda,int codigoProducto, int existencia) {
+    public void  ProductoTiendas(ProductoTienda producto) {
         String query = "INSERT INTO  tienda_producto (codigo_tienda, codigo_producto, existencia) VALUES (?,?,?)";
         try{
             PreparedStatement preparedStatement; 
             preparedStatement = con.conexion().prepareStatement(query);
-            preparedStatement.setInt(1, codigoTienda);
-            preparedStatement.setInt(2, codigoProducto);
-            preparedStatement.setInt(3, existencia);
+            preparedStatement.setInt(1, producto.getTienda());
+            preparedStatement.setInt(2, producto.getCodigo());
+            preparedStatement.setInt(3, producto.getExistencia());
             preparedStatement.executeUpdate();
             System.out.println("Tienda creada");
         } catch (SQLException e) {
             System.out.println("Error al crear usuario: " + e);
+            listaErrores.add("No se pudo guardar los productos de la tienda porque la tienda no exista");
         }
         catch (ClassNotFoundException ex) {
                 Logger.getLogger(ServletCreate.class.getName()).log(Level.SEVERE, null, ex);
@@ -194,20 +205,21 @@ public class GuardarDatosEntrada {
     }
      
     //metodo lista de producto de envio
-    public void  listaenvio(Producto producto, int idPedido) {
+    public void  listaenvio(ProductoEnvio producto) {
        String query = "INSERT INTO envios_productos (id_pedido, codigo, costoU, cantidad, costoTotal) VALUES (?,?, ?,?,?)";
         try{
             PreparedStatement preparedStatement; 
             preparedStatement = con.conexion().prepareStatement(query);
-            preparedStatement.setInt(1, idPedido);
+            preparedStatement.setInt(1, producto.getIdEnvio() );
             preparedStatement.setInt(2, producto.getCodigo());
-            preparedStatement.setDouble(3, producto.getPrecio());
-            preparedStatement.setInt(4, producto.getExistencia());
-            preparedStatement.setDouble(5, producto.getCosto());
+            preparedStatement.setDouble(3, producto.getCosto());
+            preparedStatement.setInt(4, producto.getCantidad());
+            preparedStatement.setDouble(5, producto.getCostoTotal());
             preparedStatement.executeUpdate();
             System.out.println("guardado");
         } catch (SQLException e) {
             System.out.println("Error al crear lista productos enviados: " + e);
+            listaErrores.add("No se pudo guardar los productos de envio porque pueda ser que la tienda no exista");
         }
         catch (ClassNotFoundException ex) {
                 Logger.getLogger(ServletCreate.class.getName()).log(Level.SEVERE, null, ex);
@@ -230,6 +242,7 @@ public class GuardarDatosEntrada {
             System.out.println(" Incidencia guardado");
         } catch (SQLException e) {
             System.out.println("Error al crear incidenia" + e);
+            listaErrores.add("No se pudo guardar la incidencia porque no exista la tienda o el usuario");
         }
         catch (ClassNotFoundException ex) {
                 Logger.getLogger(ServletCreate.class.getName()).log(Level.SEVERE, null, ex);
@@ -237,19 +250,20 @@ public class GuardarDatosEntrada {
     }
      
     //metodo de lista de productos de incidencia
-    public void  listIncidencias(int idpedio, int codigo, int cantida, String motivo) {
+    public void  listIncidencias(ProductoIncidencias producto) {
        String query = "INSERT INTO incidencias_producto (id_pedido, codigo, cantidad, motivo) VALUES (?,?, ?,?)";
         try{
             PreparedStatement preparedStatement; 
             preparedStatement = con.conexion().prepareStatement(query);
-            preparedStatement.setInt(1, idpedio);
-            preparedStatement.setInt(2, codigo);
-            preparedStatement.setInt(3, cantida);
-            preparedStatement.setString(4, motivo);
+            preparedStatement.setInt(1, producto.getCodigoIncidencia());
+            preparedStatement.setInt(2, producto.getCodigo());
+            preparedStatement.setInt(3, producto.getCantidad());
+            preparedStatement.setString(4, producto.getMotivo());
             preparedStatement.executeUpdate();
             System.out.println(" productos de Incidencia guardado ");
         } catch (SQLException e) {
             System.out.println("Error al crear lista de incidencia enviados: " + e);
+            listaErrores.add("No se pudo guardar los productos de incidencia porque la incidencia no existe");
         }
         catch (ClassNotFoundException ex) {
                 Logger.getLogger(ServletCreate.class.getName()).log(Level.SEVERE, null, ex);
@@ -271,6 +285,7 @@ public class GuardarDatosEntrada {
             System.out.println(" devolucion guardado ");
         } catch (SQLException e) {
             System.out.println("Error devolucion: " + e);
+            listaErrores.add("No se pudo guardar  la devolucion porque  puede que no exista la tienda ");
         }
         catch (ClassNotFoundException ex) {
                 Logger.getLogger(ServletCreate.class.getName()).log(Level.SEVERE, null, ex);
@@ -278,12 +293,12 @@ public class GuardarDatosEntrada {
     }
    
          //metodo lista de producto de devolucion
-    public void  listaDevolucion(ProductoDevolucion producto, int idPedido) {
+    public void  listaDevolucion(ProductoDevolucion producto) {
         String query = "INSERT INTO devoluciones_producto (id_pedido, codigo, costo, cantida, costoTotal, motivo) VALUES (?,?, ?,?,?,?)";
         try{
             PreparedStatement preparedStatement; 
             preparedStatement = con.conexion().prepareStatement(query);
-            preparedStatement.setInt(1, idPedido);
+            preparedStatement.setInt(1, producto.getIdDevolucion());
             preparedStatement.setInt(2, producto.getCodigo());
             preparedStatement.setDouble(3, producto.getCosto());
             preparedStatement.setInt(4, producto.getCantidad());
@@ -293,6 +308,7 @@ public class GuardarDatosEntrada {
             System.out.println("guardado");
         } catch (SQLException e) {
             System.out.println("Error lista  de productos devoluciones------>: " + e);
+            listaErrores.add("No se pudo guardar los productos de devolucion porque pueda que la devolucion no exista");
         }
         catch (ClassNotFoundException ex) {
                 Logger.getLogger(ServletCreate.class.getName()).log(Level.SEVERE, null, ex);
@@ -316,5 +332,9 @@ public class GuardarDatosEntrada {
             Logger.getLogger(GuardarDatosEntrada.class.getName()).log(Level.SEVERE, null, ex);
         }
            return id;
+    }
+    
+    public ArrayList error(){
+           return this.listaErrores;
     }
 }

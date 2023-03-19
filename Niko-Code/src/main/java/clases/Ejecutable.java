@@ -90,7 +90,7 @@ public class Ejecutable{
                 producto.setPrecio((double) a.get("precio"));
              }
            producto.setExistencia((int) existencia);
-           base.crearProductos(producto);
+          // base.crearProductos(producto);
        }
        
        //para cargar los datos de tienda
@@ -133,7 +133,7 @@ public class Ejecutable{
                GuardarDB DB=new GuardarDB();
                GuardarDatosEntrada base=new GuardarDatosEntrada();
                base.verificacionUsuario(at,usuario, encriptar.hashPassword(contraseña), Estado.ADMINISTRADOR.name());
-               DB.crearAdmin(usuarioadmin ,at);
+              // DB.crearAdmin(usuarioadmin ,at);
            } catch (NoSuchAlgorithmException ex) {
                Logger.getLogger(Ejecutable.class.getName()).log(Level.SEVERE, null, ex);
            }
