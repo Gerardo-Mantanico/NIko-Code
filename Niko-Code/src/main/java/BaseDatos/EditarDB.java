@@ -147,10 +147,10 @@ public class EditarDB {
                 case "envios":
                     while(r.next()){
                         Envios envioss = new Envios();
-                        envioss.setId(r.getInt(1));
-                        envioss.setTienda(r.getInt(2));
-                        envioss.setCodigoUsuario(r.getInt(3));
-                        envioss.setFechaSalida( r.getDate(4));
+                        envioss.setId(r.getInt(2));
+                        envioss.setTienda(r.getInt(3));
+                        envioss.setCodigoUsuario(r.getInt(4));
+                        envioss.setFechaSalida( r.getDate(5));
                         //envioss.setFechaRecibido(Date.valueOf((String) envio.get("fechaRecibido")));
                         list.add(envioss);
                     }

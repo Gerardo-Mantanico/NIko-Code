@@ -52,7 +52,7 @@ public class Ventanas extends HttpServlet {
             break;
             case"RecibirEnvios":
                 tienda = request.getParameter("valor");
-                 query="envios where tienda="+tienda+" and estado='"+Estado.DESPACHADO.name()+"'";
+                query="envios where tienda="+tienda+" and estado='"+Estado.DESPACHADO.name()+"'";
                 request.setAttribute("listEnvio", listas(query, "envios"));
                 request.getRequestDispatcher("Ventana_Tienda/RecibirEnvio.jsp").forward(request, response);
             break;

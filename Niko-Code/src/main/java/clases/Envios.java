@@ -11,6 +11,7 @@ import java.sql.Date;
  * @author HP
  */
 public class Envios {
+    private int idEnvio;
     private int id;
     private int tienda;
     private int codigoUsuario;
@@ -74,5 +75,15 @@ public class Envios {
     public void setTotal(double total) {
         this.total = total;
     }
+
+    public int getIdEnvio() {
+        return idEnvio;
+    }
+
+    public void setIdEnvio(int idEnvio) {
+        this.idEnvio = idEnvio;
+    }
+
+    
 
 }

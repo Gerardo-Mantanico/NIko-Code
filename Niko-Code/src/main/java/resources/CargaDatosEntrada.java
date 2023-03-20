@@ -218,7 +218,8 @@ public class CargaDatosEntrada {
         for(Object envios: listenvio){
             JSONObject envio= (JSONObject) envios;
             Envios envioss = new Envios();
-            envioss.setId(convertirLongInt(envio.get("id")));
+            //envioss.setIdEnvio(convertirLongInt(envio.get("id")));
+            envioss.setId(convertirLongInt(envio.get("pedido")));
             envioss.setTienda(convertirLongInt(envio.get("tienda")));
             envioss.setCodigoUsuario(this.convertirLongInt(envio.get("usuario")));
             envioss.setFechaSalida(Date.valueOf((String) envio.get("fechaSalida")));
@@ -348,13 +349,13 @@ public class CargaDatosEntrada {
         
          //guardar usuario tienda
         for(UsuarioTienda tienda: this.listUsuarioTienda){
-            base.verificacionUsuario(tienda.getCodigo(),tienda.getNombre() , tienda.getContraseña(),  Estado.TIENDA.name());
+            base.verificacionUsuario(tienda.getCodigo(),tienda.getNombreUsuario(), tienda.getContraseña(),  Estado.TIENDA.name());
             db.crearUsuarioTienda(tienda, tienda.getCodigo());
         }
      
         //guardar supervisor
         for(UsuarioSupervisor supervisor: this.listSupervisado){           
-            base.verificacionUsuario( supervisor.getCodigo(),supervisor.getNombre(),supervisor.getContraseña(), Estado.SUPERVISOR.name());
+            base.verificacionUsuario( supervisor.getCodigo(),supervisor.getNombreUsuario(),supervisor.getContraseña(), Estado.SUPERVISOR.name());
             db.crearSupervisor(supervisor, supervisor.getCodigo());
         }
         

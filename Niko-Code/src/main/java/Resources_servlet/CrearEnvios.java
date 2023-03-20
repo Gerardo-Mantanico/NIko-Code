@@ -173,6 +173,7 @@ public class CrearEnvios extends HttpServlet {
                     crearEnvio.setCodigoUsuario(IdUsuario);
                     crearEnvio.setTienda(Integer.valueOf(tienda));
                     crearEnvio.setEstado(Estado.DESPACHADO.name());
+                    crearEnvio.setId(Integer.valueOf(idPedido));
                     // Obtener la fecha actual
                     LocalDate fechaActual = LocalDate.now();
                     crearEnvio.setFechaSalida(Date.valueOf(fechaActual));
