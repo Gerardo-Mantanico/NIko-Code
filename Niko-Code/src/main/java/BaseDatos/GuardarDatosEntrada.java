@@ -6,6 +6,7 @@ package BaseDatos;
 
 import Resources_servlet.ServletCreate;
 import Resources_servlet.ServletLogin;
+import clases.Devoluciones;
 import clases.Envios;
 import clases.Incidencia;
 import clases.Pedido;
@@ -144,7 +145,7 @@ public class GuardarDatosEntrada {
      
     //metodo para crear envios
      public void  Crearenvios(Envios envios) {
-       String query = "INSERT INTO  envios (id, tienda, codigo_usuario, fechaSalida, fechaRecibido, total, estado) VALUES (?,?, ?,?,?,?,?)";
+       String query = "INSERT INTO  envios (id, tienda, codigo_usuario, fechaSalida, fechaRecibido, total, estado,id_envio) VALUES (?,?, ?,?,?,?,?,?)";
         try{
             PreparedStatement preparedStatement; 
             preparedStatement = con.conexion().prepareStatement(query);
@@ -155,6 +156,7 @@ public class GuardarDatosEntrada {
             preparedStatement.setDate(5, envios.getFechaRecibido());
             preparedStatement.setDouble(6, envios.getTotal());
             preparedStatement.setString(7,   envios.getEstado());
+            preparedStatement.setInt(8,   envios.getIdEnvio());
             preparedStatement.executeUpdate();
             System.out.println("pedido creado");
         } catch (SQLException e) {
@@ -228,7 +230,7 @@ public class GuardarDatosEntrada {
      
     //metodo para crear incidencias 
     public void  Incidencias(Incidencia incidencia) {
-        String query = "INSERT INTO incidencias (id, tienda, codigo_usuario, fecha, solucion,estado) VALUES (?,?, ?,?,?,?)";
+        String query = "INSERT INTO incidencias (id, tienda, codigo_usuario, fecha, solucion,estado, id_incidencia) VALUES (?,?, ?,?,?,?,?)";
         try{
             PreparedStatement preparedStatement; 
             preparedStatement = con.conexion().prepareStatement(query);
@@ -238,6 +240,7 @@ public class GuardarDatosEntrada {
             preparedStatement.setDate(4, incidencia.getFecha());
             preparedStatement.setString(5, incidencia.getSolucion());
             preparedStatement.setString(6, incidencia.getEstado());
+            preparedStatement.setInt(7, incidencia.getEnvio());
             preparedStatement.executeUpdate();
             System.out.println(" Incidencia guardado");
         } catch (SQLException e) {
@@ -270,8 +273,8 @@ public class GuardarDatosEntrada {
         }
     }
     //metodo para crear devoluciones
-     public void  crearDevoluciones(Pedido devolucion) {
-        String query = "INSERT INTO DEVOLUCIONES (id, tienda, codigo_usuario, fecha, total, estado) VALUES (?,?, ?,?,?,?)";
+     public void  crearDevoluciones(Devoluciones devolucion) {
+        String query = "INSERT INTO DEVOLUCIONES (id, tienda, codigo_usuario, fecha, total, estado,id_devoluciones) VALUES (?,?, ?,?,?,?,?)";
         try{
             PreparedStatement preparedStatement; 
             preparedStatement = con.conexion().prepareStatement(query);
@@ -281,6 +284,7 @@ public class GuardarDatosEntrada {
             preparedStatement.setDate(4, devolucion.getFecha());
             preparedStatement.setDouble(5, devolucion.getTotal());
             preparedStatement.setString(6, devolucion.getEstado());
+            preparedStatement.setInt(7, devolucion.getEnvio());
             preparedStatement.executeUpdate();
             System.out.println(" devolucion guardado ");
         } catch (SQLException e) {

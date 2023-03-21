@@ -6,6 +6,7 @@ package Resources_servlet;
 
 import BaseDatos.EditarDB;
 import BaseDatos.GuardarDatosEntrada;
+import clases.Devoluciones;
 import clases.Incidencia;
 import clases.ListaId;
 import clases.Producto;
@@ -33,7 +34,7 @@ public class ServletDevolucion extends HttpServlet {
     ArrayList<ProductoDevolucion> lista = new ArrayList<ProductoDevolucion>();
     EditarDB base =new EditarDB();
     GuardarDatosEntrada DB= new GuardarDatosEntrada();
-    Incidencia devolucion= new Incidencia();
+    Devoluciones devolucion= new Devoluciones();
     String tienda;
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {

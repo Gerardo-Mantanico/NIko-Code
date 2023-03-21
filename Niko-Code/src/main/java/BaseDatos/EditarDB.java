@@ -8,6 +8,7 @@ import clases.Envios;
 import clases.ListaId;
 import clases.Producto;
 import clases.ProductoDevolucion;
+import clases.ProductoIncidencias;
 import clases.Usuario;
 import clases.UsuarioSupervisor;
 import clases.UsuarioTienda;
@@ -93,6 +94,17 @@ public class EditarDB {
                         list.add(envioss);
                     }
                     break;
+                     case "warehouse":
+                    while (r.next()) {
+                        UsuarioTienda usuario = new UsuarioTienda();
+                        usuario.setCodigo(r.getInt("_code"));
+                        usuario.setNombre(r.getString("_name"));
+                        usuario.setNombreUsuario(r.getString("user_name"));
+                        usuario.setContraseña(r.getString("_password"));
+                        usuario.setEmail(r.getString("email"));
+                        list.add(usuario);
+                    }
+                    break;
 
                default:
             }r.close();
@@ -154,10 +166,32 @@ public class EditarDB {
                         //envioss.setFechaRecibido(Date.valueOf((String) envio.get("fechaRecibido")));
                         list.add(envioss);
                     }
-                    break;    
+                    break;
+                 case "ProductoDevolucion":
+                     while (r.next()) {
+                         ProductoDevolucion producto = new ProductoDevolucion();
+                         producto.setCodigo(r.getInt(2));
+                         producto.setCosto(r.getDouble(3));
+                         producto.setCantidad(r.getInt(4));
+                         producto.setCostoTotal(r.getDouble(5));
+                         producto.setMotivo(r.getString(6));
+                         list.add(producto);
+                     }
+                     break;
+                 case "ProductoIncidencias":
+                     while (r.next()) {
+                         ProductoIncidencias producto = new ProductoIncidencias();
+                         producto.setCodigo(r.getInt(2));
+                         producto.setCantidad(r.getInt(3));
+                         producto.setMotivo(r.getString(4));
+                         
+                         list.add(producto);
+                     }
+                     break;  
                 default:
                     throw new AssertionError();
             }
+             r.close();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(EditarDB.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
@@ -262,4 +296,20 @@ public class EditarDB {
         return list;
     }
      
+    public  ArrayList listaTida(String query){
+        ArrayList lista= new ArrayList();
+         try {
+          stamente = con.conexion().createStatement();
+            r = stamente.executeQuery(query);
+            while(r.next()){            
+                lista.add(r.getInt(2));
+            }
+            r.close();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(EditarDB.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(EditarDB.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        return lista;
+    }
 }

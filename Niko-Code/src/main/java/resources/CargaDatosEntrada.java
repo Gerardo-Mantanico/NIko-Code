@@ -218,7 +218,7 @@ public class CargaDatosEntrada {
         for(Object envios: listenvio){
             JSONObject envio= (JSONObject) envios;
             Envios envioss = new Envios();
-            //envioss.setIdEnvio(convertirLongInt(envio.get("id")));
+            envioss.setIdEnvio(convertirLongInt(envio.get("id")));
             envioss.setId(convertirLongInt(envio.get("pedido")));
             envioss.setTienda(convertirLongInt(envio.get("tienda")));
             envioss.setCodigoUsuario(this.convertirLongInt(envio.get("usuario")));
@@ -250,7 +250,8 @@ public class CargaDatosEntrada {
         for(Object incidencias: listIncidencias){
             JSONObject incidencia= (JSONObject) incidencias;
             Incidencia inci=new Incidencia();
-            inci.setId(convertirLongInt(incidencia.get("id")));
+            inci.setEnvio(convertirLongInt(incidencia.get("id")));
+            inci.setId(convertirLongInt(incidencia.get("envio")));
             inci.setTienda(convertirLongInt(incidencia.get("tienda")));
             inci.setCodigoUsuario(convertirLongInt(incidencia.get("usuario")));
             inci.setFecha(Date.valueOf((String) incidencia.get("fecha")));
@@ -277,7 +278,8 @@ public class CargaDatosEntrada {
             for( Object devolucion: listDevoluciones ){
                  JSONObject devo= (JSONObject) devolucion;
                  Devoluciones devoluciones =new Devoluciones();
-                 devoluciones.setId(this.convertirLongInt(devo.get("id")));
+                 devoluciones.setEnvio(this.convertirLongInt(devo.get("id")));
+                 devoluciones.setId(this.convertirLongInt(devo.get("envio")));
                  devoluciones.setTienda(this.convertirLongInt(devo.get("tienda")));
                  devoluciones.setCodigoUsuario(this.convertirLongInt(devo.get("usuario")));
                  devoluciones.setFecha( Date.valueOf((String) devo.get("fecha")));

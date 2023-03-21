@@ -21,9 +21,9 @@
         <H1>Bodega Central</H1>
          
         <a class="a-header" href="Ventanas?accion=crearEncvio"> Crear Envio</a>
-        <a class="a-header" href="#">Solucionar Inicidencias</a>
-        <a class="a-header" href="Ventanas?accion=RecibirEnvios&valor">Aceptar Devoluciones </a>
-
+        <a class="a-header" href="Ventanas?accion=SolucionarIncidencias">Solucionar Inicidencias</a>
+        <a class="a-header" href="Ventanas?accion=EstadoDevolucion">Aceptar Devoluciones </a>
+        <a class="a-header" href="Ventanas?accion=reporteBodega">Informes</a>
         <a class="a-header" href="Ventanas?accion=inicio"> Salir</a>
     </header>
     </body>

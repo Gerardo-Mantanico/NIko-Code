@@ -29,71 +29,76 @@ import resources.Estado;
 public class Ventanas extends HttpServlet {
    String query;
    String tienda;
+   int c;
    EditarDB db=new EditarDB();
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            String menu=request.getParameter("accion");
-            switch (menu) {
+         String menu = request.getParameter("accion");
+        switch (menu) {
             case "admin":
-                 request.setAttribute("lista", lista("user_admin"));
-                 request.getRequestDispatcher("Venta_Administrativa/Venta_Principal.jsp").forward(request, response);
-            break;
-            case"tienda":
+                request.setAttribute("lista", lista("user_admin"));
+                request.getRequestDispatcher("Venta_Administrativa/Venta_Principal.jsp").forward(request, response);
+                break;
+            case "tienda":
                 request.setAttribute("lista", lista("user_store"));
                 request.getRequestDispatcher("Venta_Administrativa/UsuariosTienda.jsp").forward(request, response);
-            break;
-            case"bodega":
-                 request.setAttribute("lista", lista("user_store"));
+                break;
+            case "bodega":
+                request.setAttribute("lista", lista("warehouse"));
                 request.getRequestDispatcher("Venta_Administrativa/UsuarioBodega.jsp").forward(request, response);
-            break;
-            case"supervisor":
+                break;
+            case "supervisor":
                 request.setAttribute("lista", lista("supervisory"));
                 request.getRequestDispatcher("Venta_Administrativa/SupervisorTienda.jsp").forward(request, response);
-            break;
-            case"RecibirEnvios":
+                break;
+            case "RecibirEnvios":
                 tienda = request.getParameter("valor");
-                query="envios where tienda="+tienda+" and estado='"+Estado.DESPACHADO.name()+"'";
+                query = "envios where tienda=" + tienda + " and estado='" + Estado.DESPACHADO.name() + "'";
                 request.setAttribute("listEnvio", listas(query, "envios"));
                 request.getRequestDispatcher("Ventana_Tienda/RecibirEnvio.jsp").forward(request, response);
-            break;
-            case"incidencias":
-                 tienda = request.getParameter("valor");
-                 query="select e.id, e.estado, e.tienda from envios e left  join incidencias i on e.id=i.id where i.id is null";
+                break;
+            case "incidencias":
+                tienda = request.getParameter("valor");
+                query = "select e.id, e.estado, e.tienda from envios e left  join incidencias i on e.id=i.id where i.id is null";
                 request.setAttribute("listEnvio", this.idEnvio(query));
                 request.getRequestDispatcher("Ventana_Tienda/IncidenciaDevolucion.jsp").forward(request, response);
                 break;
-            case"inicio":
+            case "inicio":
                 super.destroy();
                 response.sendRedirect("index.jsp");
-            break;
-            case"devolucion":
+                break;
+            case "devolucion":
                 tienda = request.getParameter("valor");
-                query="select e.id, e.estado, e.tienda from envios e left  join devoluciones d on e.id=d.id where d.id is null";
+                query = "select e.id, e.estado, e.tienda from envios e left  join devoluciones d on e.id=d.id where d.id is null";
                 request.setAttribute("listEnvio", this.idEnvio(query));
                 request.getRequestDispatcher("Ventana_Tienda/Devoluciones.jsp").forward(request, response);
-            break;
-            case"crearEncvio":
-                HttpSession session = request.getSession();
-                int c= (int) session.getAttribute("valor");
-                CrearEnvioDB envio =new CrearEnvioDB();
-                request.setAttribute("listTiendas", envio.listadoTiendas( String.valueOf(c)));
-                request.getRequestDispatcher("Vendana_Bodega/CrearEnvio.jsp").forward(request, response);
                 break;
-            case"ReporteBodega":
-                 request.getRequestDispatcher("Vendana_Bodega/Reporte.jsp").forward(request, response);
-                
-                
-                break;
-                
-                 case"s":
-                break;
-                
-                 case"a":
-                break;
-                 case"e":
-                break;
-                 case"f":
-                break;
+                case "crearEncvio":
+                    HttpSession session = request.getSession();
+                    c = (int) session.getAttribute("valor");
+                    CrearEnvioDB envio = new CrearEnvioDB();
+                    request.setAttribute("listTiendas", envio.listadoTiendas(String.valueOf(c)));
+                    request.getRequestDispatcher("Vendana_Bodega/CrearEnvio.jsp").forward(request, response);
+                    break;
+                case "ReporteBodega":
+                    request.getRequestDispatcher("Vendana_Bodega/Reporte.jsp").forward(request, response);
+                    break;
+                case "reporteAdmin":
+                    request.getRequestDispatcher("Venta_Administrativa/Reportes.jsp").forward(request, response);
+                    break;
+                case "reporteBodega":
+                    CrearEnvioDB envios = new CrearEnvioDB();
+                    request.setAttribute("listTiendas", envios.listadoTiendas(String.valueOf(c)));
+                    request.getRequestDispatcher("Vendana_Bodega/ReporteBodega.jsp").forward(request, response);
+                    break;
+                case "EstadoDevolucion":
+                    request.setAttribute("listTiendas", db.listaTida("select* from listatiendabodega where _code =" + c));
+                    request.getRequestDispatcher("Vendana_Bodega/AceptarRecharDevolucion.jsp").forward(request, response);
+                    break;
+                case "SolucionarIncidencias":
+                    request.setAttribute("listTiendas", db.listaTida("select* from listatiendabodega where _code =" + c));
+                    request.getRequestDispatcher("Vendana_Bodega/SolucionarIncidencias.jsp").forward(request, response);
+                    break;
                 
             default:
         }

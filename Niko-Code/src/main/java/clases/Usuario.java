@@ -22,7 +22,7 @@ public class Usuario {
     }
 
 
-    public int getCodigo() {
+   public int getCodigo() {
         return codigo;
     }
 
@@ -54,10 +54,6 @@ public class Usuario {
         this.nombre = nombre;
     }
 
-    @Override
-    public String toString() {
-        return "Usuario{" + "codigo=" + codigo + ", nombre=" + nombre + ", nombreUsuario=" + nombreUsuario + ", contrase\u00f1a=" + contraseña + '}';
-    }
     
     
 }

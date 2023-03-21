@@ -11,6 +11,7 @@ package clases;
 public class Incidencia extends Pedido{
     
     private String solucion;
+    private int envio;
 
     public String getSolucion() {
         return solucion;
@@ -18,6 +19,14 @@ public class Incidencia extends Pedido{
 
     public void setSolucion(String solucion) {
         this.solucion = solucion;
+    }
+
+    public int getEnvio() {
+        return envio;
+    }
+
+    public void setEnvio(int envio) {
+        this.envio = envio;
     }
     
         

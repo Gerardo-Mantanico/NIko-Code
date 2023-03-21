@@ -83,6 +83,7 @@ public class EnvioLisProducto extends HttpServlet {
                 LocalDate fechaActual = LocalDate.now();
                 DB.editar("UPDATE envios SET fechaRecibido= '"+fechaActual+"' WHERE id ="+id);
                 DB.editar("UPDATE envios SET estado = '"+Estado.RECIBIDO.name()+"' WHERE id ="+id);
+                DB.editar("UPDATE pedido SET estado = '"+Estado.COMPLETADO+"' WHERE id ="+id);
                 String querys="envios where tienda="+tienda+" and estado='"+Estado.DESPACHADO.name()+"'";
                 request.setAttribute("listEnvio", this.listas(querys, "envios"));
                 request.getRequestDispatcher("Ventana_Tienda/RecibirEnvio.jsp").forward(request, response);

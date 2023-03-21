@@ -1,0 +1,169 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 21/03/2023, 08:12:07
+    Author     : HP
+*/
+
+:root{
+                --white: #FFFFFF;
+                --black:  #000000;
+                --very--light--pink: #C7C7C7;
+                --text--input--field: #F7F7F7;
+                --hospital--green: #ACD9B2;
+                --dark: #232830;
+                --sm: 14px;
+                --md: 16px;
+                --lg: 18px;
+            }
+            body{
+                margin: 0;
+                font-family: 'Quicksand', sans-serif;
+            }
+            .container-createDelete{
+                width: 100%;
+                height: 100vh;
+                display: flex;
+                place-items: center;
+            }
+            .container{
+                margin-left: 50px;
+                width: 35%;
+                height: 85%;
+                display: flex;
+                place-items: center;
+                flex-direction: column;
+            }
+            .container-list{
+                width: 57%;
+                height: 85%;
+
+            }
+            .logo{ 
+                margin-top: 20px;
+
+                width: 300px;
+                height: 150px;
+            }
+
+            .label{
+                font-size: var(--sm);
+                font-weight:  bold;
+                margin-bottom: 4px;
+            }
+            .input {
+                background-color: var(--very--light--pink);
+                border: none;
+                border-radius: 8px;
+                height: 32px;
+                font-size: var(--md);
+                padding: 6px;
+                margin-bottom: 12px;
+            }
+            .select-are{
+                background-color: var(--text--input--field);
+                border: none;
+                border-radius: 8px;
+                height: 40px;
+                font-size: var(--md);
+                padding: 6px;
+                margin-bottom: 12px;
+            }
+            .button{
+                background-color: var(--white);
+                color: var(--hospital--green);
+                border: 4px solid var(--hospital--green);
+                border-radius: 8px;
+                width: 100%;
+                cursor: pointer;
+                font-size: var(--md);
+                font-weight: bold;
+                height: 50px;
+                margin-top: 50px;
+
+            }
+            .title{
+                
+                text-align: center;
+            }
+
+            .logo img{
+                margin-left: 100px;
+                max-width: 300px;
+                height: 150px;
+                border-radius: 50px;
+            }
+            table{
+                background-color: var(--white);
+                width: 100%;
+                text-align: left;
+                border-collapse: collapse;
+
+            }
+            th,td{
+                padding: 10px;
+
+            }
+            td{
+                font-size: var(--sm);
+                color:black;
+
+            }
+            thead{
+                background-color: var(--text--input--field);
+                font-size: var(--md);
+
+            }
+            tr:hover td{
+                background-color: var(--hospital--green);
+                color: var(--white);
+            }
+            .button-secundary{
+                background-color: var(--white);
+                color: var(--hospital--green);
+                border: 4px solid var(--hospital--green);
+                border-radius: 8px;
+                width: 75%;
+                height: 30px;
+                cursor: pointer;
+                font-size: var(--md);
+                font-weight: bold;
+            }
+            .encabezado{
+                width: 100%;
+                height: 60px;
+                display: flex;
+                place-items: center;
+                background-color: var(--hospital--green);
+            }
+           .nav{
+                margin-left: 80px;
+                height: 50px;
+                margin-top: 25px;
+            }
+            .a-encabezado{
+                padding-left: 40px;
+                color: black;
+                font-size: var(--lg);
+                font-weight:  bold;
+                text-decoration: none;
+            }
+            
+            .form-file{
+                margin-left: 200px;
+            }
+            .container-form{
+               margin-left: 500px;
+            }
+            
+            .input-date {
+                background-color: var(--very--light--pink);
+                border: none;
+                border-radius: 8px;
+                height: 20px;
+                font-size: var(--md);
+                padding: 6px;
+                margin-bottom: 12px;
+            }

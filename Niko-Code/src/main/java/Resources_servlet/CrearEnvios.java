@@ -183,7 +183,7 @@ public class CrearEnvios extends HttpServlet {
                     DB.Crearenvios(crearEnvio);
                     for(Producto produ: lista){
                          ProductoEnvio envioProducto=new ProductoEnvio();
-                         envioProducto.setIdEnvio(DB.IdMax("envios"));
+                         envioProducto.setIdEnvio(Integer.valueOf(idPedido));
                          envioProducto.setCodigo(produ.getCodigo());
                          envioProducto.setCosto(produ.getCosto());
                          envioProducto.setCantidad(produ.getExistencia());
