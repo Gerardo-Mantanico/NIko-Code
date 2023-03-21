@@ -57,18 +57,22 @@
                     <table>
                         <thead>
                           <tr class="tr">
-                            <th>Codigo</th>
-                            <th>Nombre</th>
-                            <th>Nombre de usuario</th>
-                            <th>Envios Generados</th>
+                            <th>id Envio</th>
+                            <th>Tienda</th>
+                            <th>Codigo de usuario</th>
+                            <th>Fecha</th>
+                            <th>Solucion</th>
+                            <th>Estado</th>
                           </tr>
                         </thead>
-                        <c:forEach items="${lista}"  var="bodega">
+                        <c:forEach items="${listIncidecia}"  var="incidencia">
                             <tbody>
-                                <td><c:out  value="${bodega.codigo}"> </c:out> </td>
-                                <td><c:out value="${bodega.nombre}"></c:out> </td>
-                                <td><c:out value="${bodega.nombreUsuario}"></c:out> </td>
-                                <td><c:out value="${bodega.email}"></c:out> </td>
+                                <td><c:out  value="${incidencia.envio}"> </c:out> </td>
+                                <td><c:out value="${incidencia.tienda}"></c:out> </td>
+                                <td><c:out value="${incidencia.codigoUsuario}"></c:out> </td>
+                                <td><c:out value="${incidencia.fecha}"></c:out> </td>
+                                 <td><c:out value="${incidencia.solucion}"></c:out> </td>
+                                  <td><c:out value="${incidencia.estado}"></c:out> </td>
                             </tbody>
                         </c:forEach>
                     </table>     
@@ -78,20 +82,24 @@
                     <table>
                         <thead>
                           <tr class="tr">
-                                <th>Codigo</th>
-                                <th>Nombre</th>
-                                <th>Nombre de usuario</th>
-                                <th>pedidos Generados</th>
+                              <th>id Envio</th>
+                              <th>Tienda</th>
+                              <th>Codigo de usuario</th>
+                              <th>Fecha</th>
+                              <th>total</th>
+                              <th>Estado</th>
                           </tr>
                         </thead>
-                        <c:forEach items="${listas}"  var="userTienda">
+                        <c:forEach items="${listDevolucion}"  var="devolucione">
                             <tbody>
-                                <td><c:out  value="${userTienda.codigo}"> </c:out> </td>
-                                <td><c:out value="${userTienda.nombre}"></c:out> </td>
-                                <td><c:out value="${userTienda.nombreUsuario}"></c:out> </td>
-                                <td><c:out value="${userTienda.email}"></c:out> </td>
+                            <td><c:out  value="${devolucione.envio}"> </c:out> </td>
+                            <td><c:out value="${devolucione.tienda}"></c:out> </td>
+                            <td><c:out value="${devolucione.codigoUsuario}"></c:out> </td>
+                            <td><c:out value="${devolucione.fecha}"></c:out> </td>
+                            <td><c:out value="${devolucione.total}"></c:out> </td>
+                            <td><c:out value="${devolucione.estado}"></c:out> </td>
                             </tbody>
-                        </c:forEach>
+                    </c:forEach>
                     </table>     
                 </div>
             <div></div>

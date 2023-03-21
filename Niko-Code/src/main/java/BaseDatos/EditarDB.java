@@ -4,7 +4,9 @@
  */
 package BaseDatos;
 
+import clases.Devoluciones;
 import clases.Envios;
+import clases.Incidencia;
 import clases.ListaId;
 import clases.Producto;
 import clases.ProductoDevolucion;
@@ -184,12 +186,35 @@ public class EditarDB {
                          producto.setCodigo(r.getInt(2));
                          producto.setCantidad(r.getInt(3));
                          producto.setMotivo(r.getString(4));
-                         
                          list.add(producto);
                      }
-                     break;  
+                     break;
+                 case "Incidencia":
+                     while (r.next()) {
+                         Incidencia incidencia = new Incidencia();
+                         incidencia.setEnvio(r.getInt(2));
+                         incidencia.setTienda(r.getInt(3));
+                         incidencia.setCodigoUsuario(r.getInt(4));
+                         incidencia.setFecha(r.getDate(5));
+                         incidencia.setSolucion(r.getString(6));
+                         incidencia.setEstado(r.getString(7));
+                         list.add(incidencia);
+                     }
+                     break;
+                     case "devolucion":
+                     while (r.next()) {
+                         Devoluciones incidencia = new Devoluciones();
+                         incidencia.setEnvio(r.getInt(2));
+                         incidencia.setTienda(r.getInt(3));
+                         incidencia.setCodigoUsuario(r.getInt(4));
+                         incidencia.setFecha(r.getDate(5));
+                         incidencia.setTotal(r.getDouble(6));
+                         incidencia.setEstado(r.getString(7));
+                         list.add(incidencia);
+                     }
+                     break; 
                 default:
-                    throw new AssertionError();
+                    
             }
              r.close();
         } catch (ClassNotFoundException ex) {
@@ -264,8 +289,9 @@ public class EditarDB {
     
     public void editar(String query){
          try {
-            stamente.execute(query);
+            
             stamente = con.conexion().createStatement();
+            stamente.execute(query);
             con.conexion().close();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(EditarDB.class.getName()).log(Level.SEVERE, null, ex);

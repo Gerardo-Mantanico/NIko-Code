@@ -55,15 +55,17 @@
                         </thead>
                         <tbody>       
                             <c:forEach items="${lista}" var="usuario">
-                             <tr>
-                                 <td> <c:out value="${usuario.nombre}" ></c:out></td>
-                                <td> <c:out value="${usuario.nombreUsuario}" ></c:out></td>     
-                                <form method="POST" action="EditarDatos" class="form"> 
-                                <th scope="row"> <button  name="editar" value="<c:out value="${usuario.codigo}" ></c:out>"  class="button-secundary">Edit </button></th>
-                                <th scope="row"> <button  value="<c:out value="DESACTIVA" ></c:out>"  class="button-secundary">DESACTIVAR</button></th>
+                                <tr>
+                                    <td> <c:out value="${usuario.nombre}" ></c:out></td>
+                                    <td> <c:out value="${usuario.nombreUsuario}" ></c:out></td>     
+                                <form action="EditarUsuarios" method="POST">
+                                    <th scope="row"> <button value="Editar"  class="button-secundary">Editar </button></th>
+                                    <th scope="row"> <button   value="Desactivar" name="button"  class="button-secundary">Desactivar </button></th>
+                                     <th scope="row"> <button   value="Activar" name="button"  class="button-secundary">Activar </button></th>
+                                    <input value="<c:out value="${usuario.codigo}" ></c:out>" name="IdUsuario" type="hidden">
                                 </form>
-                             </c:forEach>
-                                </tr>
+                        </c:forEach>
+                        </tr>
                         </tbody>
                     </table>     
                 </div>

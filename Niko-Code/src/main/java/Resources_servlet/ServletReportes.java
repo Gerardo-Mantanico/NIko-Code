@@ -4,6 +4,7 @@
  */
 package Resources_servlet;
 
+import BaseDatos.EditarDB;
 import clases.Envios;
 import clases.Producto;
 import clases.Reporte;
@@ -25,6 +26,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import resources.ConexionBase;
+import resources.Estado;
 
 /**
  *
@@ -39,6 +41,7 @@ public class ServletReportes extends HttpServlet {
     ArrayList listObject= new ArrayList();
     String fecha;
     String query;
+    EditarDB DB = new EditarDB();
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -186,6 +189,8 @@ public class ServletReportes extends HttpServlet {
                     String tienda=request.getParameter("tienda");
                     fecha = request.getParameter("date");
                     query = "select* from envios where tienda="+tienda+" and  fechaSalida<='"+fecha+"'";
+                    String query2 ="incidencias where tienda="+tienda+" and  fecha<='"+fecha+"' and estado='"+Estado.SOLUCIONADA.name()+"'";
+                    String query3 ="devoluciones where tienda="+tienda+" and  fecha<='"+fecha+"'";
                     stamente = con.conexion().createStatement();
                     r = stamente.executeQuery(query);
                     while (r.next()) {
@@ -198,6 +203,8 @@ public class ServletReportes extends HttpServlet {
                         listObject.add(envio);
                     }
                     r.close();
+                    request.setAttribute("listDevolucion", DB.listas(query3,"devolucion"));
+                    request.setAttribute("listIncidecia", DB.listas(query2,"Incidencia"));
                     request.setAttribute("listEnvio", listObject);
                     request.getRequestDispatcher("Ventanas?accion=reporteBodega").forward(request, response);
                     break;

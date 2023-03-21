@@ -68,9 +68,13 @@
                                 <td> <c:out value="${usuario.tienda}" ></c:out></td>
                                 <td> <c:out value="${usuario.nombreUsuario}" ></c:out></td>
                                 <td>*********</td>
-                                <td> <c:out value="${usuario.email }" ></c:out></td>  
-                                <th scope="row"> <button value="<c:out value="${usuario.codigo}" ></c:out>"  class="button-secundary">Editar </button></th>
-                                <th scope="row"> <button    value="<c:out value="${usuario.codigo}" ></c:out>"  class="button-secundary">Desactivar </button></th>
+                                <td> <c:out value="${usuario.email }" ></c:out></td> 
+                            <form action="EditarUsuarios" method="POST">
+                                <th scope="row"> <button value="Editar"  class="button-secundary">Editar </button></th>
+                                <th scope="row"> <button   value="Activar" name="button"  class="button-secundary">Activar </button></th>
+                                <th scope="row"> <button   value="Desactivar" name="button"  class="button-secundary">Desactivar </button></th>
+                               <input value="<c:out value="${usuario.codigo}" ></c:out>" name="IdUsuario" type="hidden">
+                               </form>
                              </c:forEach>
                                 </tr>
                         </tbody>

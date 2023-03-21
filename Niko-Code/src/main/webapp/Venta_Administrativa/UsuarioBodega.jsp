@@ -58,8 +58,8 @@
                                 <td> <c:out value="${supervisor.nombreUsuario}" ></c:out></td> 
                                 <td> *********</td>
                                 <td> <c:out value="${supervisor.email}" ></c:out></td>   
-                                <th scope="row"> <button value="<c:out value="${usuario.codigo}" ></c:out>"  class="button-secundary">Editar </button></th>
-                                <th scope="row"> <button    value="<c:out value="${usuario.codigo}" ></c:out>"  class="button-secundary">Desactivar</button></th>
+                                <th scope="row"> <button   class="button-secundary">Editar </button></th>
+                                <th scope="row"> <button     class="button-secundary">Desactivar</button></th>
                              </c:forEach>
                                 </tr>
                         </tbody>

@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import resources.ConexionBase;
 import resources.Encriptar;
+import resources.Estado;
 
 /**
  *
@@ -89,7 +90,8 @@ public class ServletLogin extends HttpServlet {
                    String nuevo= encriptar.hashPassword(contraseña);
                      if(r.next()){
                     String conta=r.getString("_password");
-                    if(nuevo.equals(conta)){
+                     String estado=r.getString("state");
+                    if(nuevo.equals(conta) && estado.equals(Estado.ACTIVADO.name()) ){
                         String tipo=r.getString("_type");
                         switch (tipo) {
                             case "ADMINISTRADOR":
